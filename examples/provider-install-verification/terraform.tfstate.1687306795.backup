@@ -1,0 +1,39 @@
+{
+  "version": 4,
+  "terraform_version": "1.5.0",
+  "serial": 6,
+  "lineage": "7de7c713-d7c2-a9e4-b432-5c39139a43e9",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "querydesk_database",
+      "name": "example",
+      "provider": "provider[\"registry.terraform.io/querydesk/querydesk\"]",
+      "instances": [
+        {
+          "status": "tainted",
+          "schema_version": 0,
+          "attributes": {
+            "adapter": "postgres",
+            "agent_id": null,
+            "cacertfile": null,
+            "certfile": null,
+            "database": "coverbot_dev",
+            "hostname": "localhost",
+            "id": "db_01H3DMZH2J248T7BXD432AC0MZ",
+            "keyfile": null,
+            "name": "terraform",
+            "password": "postgres",
+            "restrict_access": null,
+            "reviews_required": null,
+            "ssl": null,
+            "username": "postgres"
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
