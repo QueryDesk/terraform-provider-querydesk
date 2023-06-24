@@ -1,58 +1,34 @@
+//go:generate go run github.com/Khan/genqlient
 package client
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
-	"time"
+
+	_ "github.com/Khan/genqlient/generate"
+	"github.com/Khan/genqlient/graphql"
+	_ "github.com/suessflorian/gqlfetch"
 )
 
-// HostURL - Default Hashicups URL
-const HostURL string = "http://localhost:4000"
-
-// Client -
-type Client struct {
-	HostURL    string
-	HTTPClient *http.Client
-	ApiKey     string
+type authedTransport struct {
+	key     string
+	wrapped http.RoundTripper
 }
 
-// NewClient -
-func NewClient(host, apiKey *string) (*Client, error) {
-	c := Client{
-		HTTPClient: &http.Client{Timeout: 10 * time.Second},
-		HostURL:    HostURL,
+func (t *authedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	req.Header.Set("x-api-key", t.key)
+	return t.wrapped.RoundTrip(req)
+}
+
+func NewClient(host *string, apiKey *string) (*graphql.Client, error) {
+	httpClient := http.Client{
+		Transport: &authedTransport{
+			key:     *apiKey,
+			wrapped: http.DefaultTransport,
+		},
 	}
 
-	if host != nil {
-		c.HostURL = *host
-	}
-
-	c.ApiKey = *apiKey
+	c := graphql.NewClient(fmt.Sprintf("%s/graphql", *host), &httpClient)
 
 	return &c, nil
-}
-
-func (c *Client) doRequest(req *http.Request) ([]byte, error) {
-	apiKey := c.ApiKey
-
-	req.Header.Set("x-api-key", apiKey)
-	req.Header.Set("content-type", "application/json")
-
-	res, err := c.HTTPClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, body)
-	}
-
-	return body, err
 }

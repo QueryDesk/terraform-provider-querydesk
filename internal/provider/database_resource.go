@@ -5,12 +5,15 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"terraform-provider-querydesk/internal/client"
 
+	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -28,26 +31,22 @@ func NewDatabaseResource() resource.Resource {
 
 // DatabaseResource defines the resource implementation.
 type DatabaseResource struct {
-	client *client.Client
+	graphqlClient *graphql.Client
 }
 
 // DatabaseResourceModel describes the resource data model.
 type DatabaseResourceModel struct {
-	Id       types.String `tfsdk:"id"`
-	Name     types.String `tfsdk:"name"`
-	Username types.String `tfsdk:"username"`
-	Password types.String `tfsdk:"password"`
+	Id   types.String `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
 	// TODO: make an enum
-	Adapter         types.String `tfsdk:"adapter"`
-	Hostname        types.String `tfsdk:"hostname"`
-	Database        types.String `tfsdk:"database"`
-	ReviewsRequired types.Int64  `tfsdk:"reviews_required"`
-	Ssl             types.Bool   `tfsdk:"ssl"`
-	CaCertFile      types.String `tfsdk:"cacertfile"`
-	KeyFile         types.String `tfsdk:"keyfile"`
-	CertFile        types.String `tfsdk:"certfile"`
-	RestrictAccess  types.Bool   `tfsdk:"restrict_access"`
-	AgentId         types.String `tfsdk:"agent_id"`
+	Adapter        types.String `tfsdk:"adapter"`
+	Hostname       types.String `tfsdk:"hostname"`
+	Database       types.String `tfsdk:"database"`
+	Ssl            types.Bool   `tfsdk:"ssl"`
+	CaCertFile     types.String `tfsdk:"cacertfile"`
+	KeyFile        types.String `tfsdk:"keyfile"`
+	CertFile       types.String `tfsdk:"certfile"`
+	RestrictAccess types.Bool   `tfsdk:"restrict_access"`
 }
 
 func (r *DatabaseResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -71,15 +70,6 @@ func (r *DatabaseResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: "Database name",
 				Required:            true,
 			},
-			"username": schema.StringAttribute{
-				MarkdownDescription: "Database username",
-				Required:            true,
-			},
-			"password": schema.StringAttribute{
-				MarkdownDescription: "Database name",
-				Required:            true,
-				Sensitive:           true,
-			},
 			"adapter": schema.StringAttribute{
 				MarkdownDescription: "Database name",
 				Required:            true,
@@ -92,15 +82,11 @@ func (r *DatabaseResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: "Database name",
 				Required:            true,
 			},
-			"reviews_required": schema.Int64Attribute{
-				MarkdownDescription: "Database name",
-				Optional:            true,
-				Computed:            true,
-			},
 			"ssl": schema.BoolAttribute{
 				MarkdownDescription: "Database name",
 				Optional:            true,
 				Computed:            true,
+				Default:             booldefault.StaticBool(false),
 			},
 			"cacertfile": schema.StringAttribute{
 				MarkdownDescription: "Database name",
@@ -121,10 +107,7 @@ func (r *DatabaseResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: "Database name",
 				Optional:            true,
 				Computed:            true,
-			},
-			"agent_id": schema.StringAttribute{
-				MarkdownDescription: "Database name",
-				Optional:            true,
+				Default:             booldefault.StaticBool(true),
 			},
 		},
 	}
@@ -136,7 +119,7 @@ func (r *DatabaseResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	client, ok := req.ProviderData.(*client.Client)
+	client, ok := req.ProviderData.(*graphql.Client)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -147,7 +130,7 @@ func (r *DatabaseResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	r.client = client
+	r.graphqlClient = client
 }
 
 func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -160,23 +143,19 @@ func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	rb := client.Database{
-		Name:            data.Name.ValueString(),
-		Username:        data.Username.ValueString(),
-		Password:        data.Password.ValueString(),
-		Adapter:         data.Adapter.ValueString(),
-		Hostname:        data.Hostname.ValueString(),
-		Database:        data.Database.ValueString(),
-		ReviewsRequired: data.ReviewsRequired.ValueInt64(),
-		Ssl:             data.Ssl.ValueBool(),
-		CaCertFile:      data.CaCertFile.ValueString(),
-		KeyFile:         data.KeyFile.ValueString(),
-		CertFile:        data.CertFile.ValueString(),
-		RestrictAccess:  data.RestrictAccess.ValueBool(),
-		AgentId:         data.AgentId.ValueString(),
+	input := client.CreateDatabaseInput{
+		Name:           data.Name.ValueString(),
+		Adapter:        data.Adapter.ValueString(),
+		Hostname:       data.Hostname.ValueString(),
+		Database:       data.Database.ValueString(),
+		Ssl:            data.Ssl.ValueBool(),
+		Cacertfile:     data.CaCertFile.ValueString(),
+		Keyfile:        data.KeyFile.ValueString(),
+		Certfile:       data.CertFile.ValueString(),
+		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 
-	database, err := r.client.CreateDatabase(rb)
+	remoteData, err := client.CreateDatabase(ctx, *r.graphqlClient, input)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating database",
@@ -185,13 +164,11 @@ func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	// For the purposes of this example code, hardcoding a response value to
-	// save into the Terraform state.
-	data.Id = types.StringValue(database.Id)
+	// TODO: handle graphql errors
 
-	// Write logs using the tflog package
-	// Documentation: https://terraform.io/plugin/log
-	tflog.Trace(ctx, "created a resource")
+	data.Id = types.StringValue(remoteData.CreateDatabase.Result.Id)
+	data.Ssl = types.BoolValue(remoteData.CreateDatabase.Result.Ssl)
+	data.RestrictAccess = types.BoolValue(remoteData.CreateDatabase.Result.RestrictAccess)
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -207,7 +184,7 @@ func (r *DatabaseResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	database, err := r.client.GetDatabase(data.Id.ValueString())
+	remoteData, err := client.GetDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to get database",
@@ -216,19 +193,12 @@ func (r *DatabaseResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	data.Name = types.StringValue(database.Name)
-	data.Username = types.StringValue(database.Username)
-	data.Password = types.StringValue(database.Password)
-	data.Adapter = types.StringValue(database.Adapter)
-	data.Hostname = types.StringValue(database.Hostname)
-	data.Database = types.StringValue(database.Database)
-	data.ReviewsRequired = types.Int64Value(database.ReviewsRequired)
-	data.Ssl = types.BoolValue(database.Ssl)
-	data.CaCertFile = types.StringValue(database.CaCertFile)
-	data.KeyFile = types.StringValue(database.KeyFile)
-	data.CertFile = types.StringValue(database.CertFile)
-	data.RestrictAccess = types.BoolValue(database.RestrictAccess)
-	data.AgentId = types.StringValue(database.AgentId)
+	data.Name = types.StringValue(remoteData.Database.Name)
+	data.Adapter = types.StringValue(remoteData.Database.Adapter)
+	data.Hostname = types.StringValue(remoteData.Database.Hostname)
+	data.Database = types.StringValue(remoteData.Database.Database)
+	data.Ssl = types.BoolValue(remoteData.Database.Ssl)
+	data.RestrictAccess = types.BoolValue(remoteData.Database.RestrictAccess)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -244,13 +214,31 @@ func (r *DatabaseResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	// If applicable, this is a great opportunity to initialize any necessary
-	// provider client data and make a call using it.
-	// httpResp, err := r.client.Do(httpReq)
-	// if err != nil {
-	//     resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update example, got error: %s", err))
-	//     return
-	// }
+	input := client.UpdateDatabaseInput{
+		Name:           data.Name.ValueString(),
+		Adapter:        data.Adapter.ValueString(),
+		Hostname:       data.Hostname.ValueString(),
+		Database:       data.Database.ValueString(),
+		Ssl:            data.Ssl.ValueBool(),
+		NewCacertfile:  data.CaCertFile.ValueString(),
+		NewKeyfile:     data.KeyFile.ValueString(),
+		NewCertfile:    data.CertFile.ValueString(),
+		RestrictAccess: data.RestrictAccess.ValueBool(),
+	}
+
+	remoteData, err := client.UpdateDatabase(ctx, *r.graphqlClient, data.Id.ValueString(), input)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating database",
+			"Could not create database, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	json, err := json.Marshal(remoteData)
+	tflog.Info(ctx, fmt.Sprintf("json: %s", json))
+
+	// TODO: handle graphql errors
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

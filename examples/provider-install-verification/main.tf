@@ -13,17 +13,7 @@ provider "querydesk" {
 
 resource "querydesk_database" "example" {
   name     = "terraform"
-  username = "postgres"
-  password = "postgres"
   adapter  = "postgres"
   hostname = "localhost"
-  database = "coverbot_dev"
-  # TODO: figure out computed values
-  ssl              = false
-  restrict_access  = false
-  reviews_required = 0
-}
-
-output "database" {
-  value = querydesk_database.example
+  database = "terraform"
 }

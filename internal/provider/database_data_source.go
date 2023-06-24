@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"terraform-provider-querydesk/internal/client"
 
+	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -19,12 +20,18 @@ func NewDatabaseDataSource() datasource.DataSource {
 }
 
 type DatabaseDataSource struct {
-	client *client.Client
+	graphqlClient *graphql.Client
 }
 
 type DatabaseDataSourceModel struct {
 	Id   types.String `tfsdk:"id"`
 	Name types.String `tfsdk:"name"`
+	// TODO: make an enum
+	Adapter        types.String `tfsdk:"adapter"`
+	Hostname       types.String `tfsdk:"hostname"`
+	Database       types.String `tfsdk:"database"`
+	Ssl            types.Bool   `tfsdk:"ssl"`
+	RestrictAccess types.Bool   `tfsdk:"restrict_access"`
 }
 
 func (d *DatabaseDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -44,6 +51,26 @@ func (d *DatabaseDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "Name of the database connection",
 				Computed:            true,
 			},
+			"adapter": schema.StringAttribute{
+				MarkdownDescription: "Database name",
+				Computed:            true,
+			},
+			"database": schema.StringAttribute{
+				MarkdownDescription: "Database name",
+				Computed:            true,
+			},
+			"hostname": schema.StringAttribute{
+				MarkdownDescription: "Database name",
+				Computed:            true,
+			},
+			"ssl": schema.BoolAttribute{
+				MarkdownDescription: "Database name",
+				Computed:            true,
+			},
+			"restrict_access": schema.BoolAttribute{
+				MarkdownDescription: "Database name",
+				Computed:            true,
+			},
 		},
 	}
 }
@@ -54,7 +81,7 @@ func (d *DatabaseDataSource) Configure(ctx context.Context, req datasource.Confi
 		return
 	}
 
-	client, ok := req.ProviderData.(*client.Client)
+	client, ok := req.ProviderData.(*graphql.Client)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -65,7 +92,7 @@ func (d *DatabaseDataSource) Configure(ctx context.Context, req datasource.Confi
 		return
 	}
 
-	d.client = client
+	d.graphqlClient = client
 }
 
 func (d *DatabaseDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -78,7 +105,7 @@ func (d *DatabaseDataSource) Read(ctx context.Context, req datasource.ReadReques
 		return
 	}
 
-	database, err := d.client.GetDatabase(data.Id.ValueString())
+	remoteData, err := client.GetDatabase(ctx, *d.graphqlClient, data.Id.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to get database",
@@ -87,10 +114,12 @@ func (d *DatabaseDataSource) Read(ctx context.Context, req datasource.ReadReques
 		return
 	}
 
-	data = DatabaseDataSourceModel{
-		Id:   types.StringValue(database.Id),
-		Name: types.StringValue(database.Name),
-	}
+	data.Name = types.StringValue(remoteData.Database.Name)
+	data.Adapter = types.StringValue(remoteData.Database.Adapter)
+	data.Hostname = types.StringValue(remoteData.Database.Hostname)
+	data.Database = types.StringValue(remoteData.Database.Database)
+	data.Ssl = types.BoolValue(remoteData.Database.Ssl)
+	data.RestrictAccess = types.BoolValue(remoteData.Database.RestrictAccess)
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
