@@ -13,7 +13,7 @@ description: |-
 ## Example Usage
 
 ```terraform
-provider "scaffolding" {
+provider "querydesk" {
   # example configuration here
 }
 ```
@@ -24,7 +24,4 @@ provider "scaffolding" {
 ### Required
 
 - `api_key` (String, Sensitive)
-
-### Optional
-
 - `host` (String)

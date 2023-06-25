@@ -13,8 +13,8 @@ import (
 const (
 	providerConfig = `
 provider "querydesk" {
-	host     = "http://localhost:4000"
-	api_key = "test"
+	host    = "http://localhost:4000"
+	api_key = "SFMyNTY.g2gDbQAAAB5rZXlfMDFIM0JFWjlENkJSMVc1NUcwSjk5TUswMktuBgDGpe_WiAFiAAFRgA.LiCcHky6wRmzciNtrP2vSQzz4QEvv9qL255BinhfF7I"
 }
 `
 )

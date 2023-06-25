@@ -7,5 +7,8 @@ package tools
 
 import (
 	// Documentation generation
+	_ "github.com/Khan/genqlient/generate"
+	// graphql generation
 	_ "github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs"
+	_ "github.com/suessflorian/gqlfetch"
 )

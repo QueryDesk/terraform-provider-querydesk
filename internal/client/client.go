@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	_ "github.com/Khan/genqlient/generate"
 	"github.com/Khan/genqlient/graphql"
-	_ "github.com/suessflorian/gqlfetch"
 )
 
 type authedTransport struct {

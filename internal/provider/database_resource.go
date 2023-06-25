@@ -59,50 +59,50 @@ func (r *DatabaseResource) Schema(ctx context.Context, req resource.SchemaReques
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "Database identifier",
+				MarkdownDescription: "Database id.",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "The name for users to use to identity the database.",
 				Required:            true,
 			},
 			"adapter": schema.StringAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "The adapter to use to establish the connection. Currently only `postgres` and `mysql` are supported, but  sql server is on the roadmap.",
 				Required:            true,
 			},
 			"database": schema.StringAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "The name of the database to connect to.",
 				Required:            true,
 			},
 			"hostname": schema.StringAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "The hostname for connecting to the database, either an ip or url.",
 				Required:            true,
 			},
 			"ssl": schema.BoolAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "Set to `true` to turn on ssl connections for this database.",
 				Optional:            true,
 				Computed:            true,
 				Default:             booldefault.StaticBool(false),
 			},
 			"cacertfile": schema.StringAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "The server ca cert to use with ssl connections, `ssl` must be set to `true`.",
 				Optional:            true,
 				Sensitive:           true,
 			},
 			"keyfile": schema.StringAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "The client key to use with ssl connections, `ssl` must be set to `true`.",
 				Optional:            true,
 				Sensitive:           true,
 			},
 			"certfile": schema.StringAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "The client cert to use with ssl connections, `ssl` must be set to `true`.",
 				Optional:            true,
 				Sensitive:           true,
 			},
 			"restrict_access": schema.BoolAttribute{
-				MarkdownDescription: "Database name",
+				MarkdownDescription: "Whether access to this databases should be explicitly granted to users or if any authenticated user can access it.",
 				Optional:            true,
 				Computed:            true,
 				Default:             booldefault.StaticBool(true),

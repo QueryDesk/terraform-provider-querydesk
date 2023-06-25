@@ -17,11 +17,10 @@ func TestAccDatabaseResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: providerConfig + testAccDatabaseResourceConfig("one"),
+				Config: testAccDatabaseResourceConfig("one"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("querydesk_database.test", "name", "one"),
 					resource.TestCheckResourceAttr("querydesk_database.test", "ssl", "false"),
-					resource.TestCheckResourceAttr("querydesk_database.test", "id", "example-id"),
 				),
 			},
 			// ImportState testing
@@ -29,11 +28,6 @@ func TestAccDatabaseResource(t *testing.T) {
 				ResourceName:      "querydesk_database.test",
 				ImportState:       true,
 				ImportStateVerify: true,
-				// This is not normally necessary, but is here because this
-				// example code does not have an actual upstream service.
-				// Once the Read method is able to refresh information from
-				// the upstream service, this can be removed.
-				ImportStateVerifyIgnore: []string{"name", "defaulted"},
 			},
 			// Update and Read testing
 			{
@@ -48,7 +42,7 @@ func TestAccDatabaseResource(t *testing.T) {
 }
 
 func testAccDatabaseResourceConfig(name string) string {
-	return fmt.Sprintf(`
+	return providerConfig + fmt.Sprintf(`
 resource "querydesk_database" "test" {
   name     = %[1]q
   adapter  = "postgres"
