@@ -153,7 +153,7 @@ func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateReques
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 
-	remoteData, err := client.CreateDatabase(ctx, *r.graphqlClient, input)
+	graphqlResp, err := client.CreateDatabase(ctx, *r.graphqlClient, input)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating database",
@@ -162,11 +162,17 @@ func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
+	if len(graphqlResp.CreateDatabase.Errors) > 0 {
+		resp.Diagnostics.AddError(
+			"Error creating database",
+			"Could not create database: "+graphqlResp.CreateDatabase.Errors[0].Message,
+		)
+		return
+	}
+
 	// TODO: handle graphql errors
 
-	data.Id = types.StringValue(remoteData.CreateDatabase.Result.Id)
-	data.Ssl = types.BoolValue(remoteData.CreateDatabase.Result.Ssl)
-	data.RestrictAccess = types.BoolValue(remoteData.CreateDatabase.Result.RestrictAccess)
+	data.Id = types.StringValue(graphqlResp.CreateDatabase.Result.Id)
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -182,30 +188,28 @@ func (r *DatabaseResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	remoteData, err := client.GetDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
+	graphqlResp, err := client.GetDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
 
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Unable to get database",
+			"Unable to Refresh Resource",
 			err.Error(),
 		)
 		return
 	}
 
-	if remoteData.Database.Id == "" {
-		resp.Diagnostics.AddError(
-			"Unable to get database",
-			fmt.Sprintf("Database with id %s not found", data.Id.ValueString()),
-		)
+	// If id is empty, the resource no longer exists
+	if graphqlResp.Database.Id == "" {
+		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	data.Name = types.StringValue(remoteData.Database.Name)
-	data.Adapter = types.StringValue(remoteData.Database.Adapter)
-	data.Hostname = types.StringValue(remoteData.Database.Hostname)
-	data.Database = types.StringValue(remoteData.Database.Database)
-	data.Ssl = types.BoolValue(remoteData.Database.Ssl)
-	data.RestrictAccess = types.BoolValue(remoteData.Database.RestrictAccess)
+	data.Name = types.StringValue(graphqlResp.Database.Name)
+	data.Adapter = types.StringValue(graphqlResp.Database.Adapter)
+	data.Hostname = types.StringValue(graphqlResp.Database.Hostname)
+	data.Database = types.StringValue(graphqlResp.Database.Database)
+	data.Ssl = types.BoolValue(graphqlResp.Database.Ssl)
+	data.RestrictAccess = types.BoolValue(graphqlResp.Database.RestrictAccess)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -233,16 +237,23 @@ func (r *DatabaseResource) Update(ctx context.Context, req resource.UpdateReques
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 
-	_, err := client.UpdateDatabase(ctx, *r.graphqlClient, data.Id.ValueString(), input)
+	graphqlResp, err := client.UpdateDatabase(ctx, *r.graphqlClient, data.Id.ValueString(), input)
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error creating database",
-			"Could not create database, unexpected error: "+err.Error(),
+			"Error updating database",
+			"Could not update database, unexpected error: "+err.Error(),
 		)
+
 		return
 	}
 
-	// TODO: handle graphql errors
+	if len(graphqlResp.UpdateDatabase.Errors) > 0 {
+		resp.Diagnostics.AddError(
+			"Error updating database",
+			"Could not update database, unexpected error: "+graphqlResp.UpdateDatabase.Errors[0].Message,
+		)
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -258,12 +269,23 @@ func (r *DatabaseResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	_, err := client.DeleteDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
+	graphqlResp, err := client.DeleteDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete database, got error: %s", err))
+		resp.Diagnostics.AddError(
+			"Client Error",
+			fmt.Sprintf("Unable to delete database, got error: %s", err),
+		)
+
 		return
 	}
-	// TODO: handle graphql errors
+
+	if len(graphqlResp.DeleteDatabase.Errors) > 0 {
+		resp.Diagnostics.AddError(
+			"Error deleting database",
+			"Could not delete database, unexpected error: "+graphqlResp.DeleteDatabase.Errors[0].Message,
+		)
+		return
+	}
 }
 
 func (r *DatabaseResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

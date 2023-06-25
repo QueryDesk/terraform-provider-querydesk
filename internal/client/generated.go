@@ -36,8 +36,6 @@ func (v *CreateDatabaseCreateDatabaseCreateDatabaseResult) GetErrors() []CreateD
 type CreateDatabaseCreateDatabaseCreateDatabaseResultErrorsMutationError struct {
 	// An error code for the given error
 	Code string `json:"code"`
-	// The field or fields that produced the error
-	Fields []string `json:"fields"`
 	// The human readable error message
 	Message string `json:"message"`
 }
@@ -47,11 +45,6 @@ func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultErrorsMutationError) Ge
 	return v.Code
 }
 
-// GetFields returns CreateDatabaseCreateDatabaseCreateDatabaseResultErrorsMutationError.Fields, and is useful for accessing the field via an interface.
-func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultErrorsMutationError) GetFields() []string {
-	return v.Fields
-}
-
 // GetMessage returns CreateDatabaseCreateDatabaseCreateDatabaseResultErrorsMutationError.Message, and is useful for accessing the field via an interface.
 func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultErrorsMutationError) GetMessage() string {
 	return v.Message
@@ -59,45 +52,11 @@ func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultErrorsMutationError) Ge
 
 // CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase includes the requested fields of the GraphQL type Database.
 type CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase struct {
-	Id             string `json:"id"`
-	Name           string `json:"name"`
-	Adapter        string `json:"adapter"`
-	Hostname       string `json:"hostname"`
-	Database       string `json:"database"`
-	Ssl            bool   `json:"ssl"`
-	RestrictAccess bool   `json:"restrictAccess"`
+	Id string `json:"id"`
 }
 
 // GetId returns CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase.Id, and is useful for accessing the field via an interface.
 func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase) GetId() string { return v.Id }
-
-// GetName returns CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase.Name, and is useful for accessing the field via an interface.
-func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase) GetName() string {
-	return v.Name
-}
-
-// GetAdapter returns CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase.Adapter, and is useful for accessing the field via an interface.
-func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase) GetAdapter() string {
-	return v.Adapter
-}
-
-// GetHostname returns CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase.Hostname, and is useful for accessing the field via an interface.
-func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase) GetHostname() string {
-	return v.Hostname
-}
-
-// GetDatabase returns CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase.Database, and is useful for accessing the field via an interface.
-func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase) GetDatabase() string {
-	return v.Database
-}
-
-// GetSsl returns CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase.Ssl, and is useful for accessing the field via an interface.
-func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase) GetSsl() bool { return v.Ssl }
-
-// GetRestrictAccess returns CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase.RestrictAccess, and is useful for accessing the field via an interface.
-func (v *CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase) GetRestrictAccess() bool {
-	return v.RestrictAccess
-}
 
 type CreateDatabaseInput struct {
 	Name           string `json:"name"`
@@ -180,8 +139,6 @@ func (v *DeleteDatabaseDeleteDatabaseDeleteDatabaseResult) GetErrors() []DeleteD
 type DeleteDatabaseDeleteDatabaseDeleteDatabaseResultErrorsMutationError struct {
 	// An error code for the given error
 	Code string `json:"code"`
-	// The field or fields that produced the error
-	Fields []string `json:"fields"`
 	// The human readable error message
 	Message string `json:"message"`
 }
@@ -189,11 +146,6 @@ type DeleteDatabaseDeleteDatabaseDeleteDatabaseResultErrorsMutationError struct 
 // GetCode returns DeleteDatabaseDeleteDatabaseDeleteDatabaseResultErrorsMutationError.Code, and is useful for accessing the field via an interface.
 func (v *DeleteDatabaseDeleteDatabaseDeleteDatabaseResultErrorsMutationError) GetCode() string {
 	return v.Code
-}
-
-// GetFields returns DeleteDatabaseDeleteDatabaseDeleteDatabaseResultErrorsMutationError.Fields, and is useful for accessing the field via an interface.
-func (v *DeleteDatabaseDeleteDatabaseDeleteDatabaseResultErrorsMutationError) GetFields() []string {
-	return v.Fields
 }
 
 // GetMessage returns DeleteDatabaseDeleteDatabaseDeleteDatabaseResultErrorsMutationError.Message, and is useful for accessing the field via an interface.
@@ -340,8 +292,6 @@ func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResult) GetErrors() []UpdateD
 type UpdateDatabaseUpdateDatabaseUpdateDatabaseResultErrorsMutationError struct {
 	// An error code for the given error
 	Code string `json:"code"`
-	// The field or fields that produced the error
-	Fields []string `json:"fields"`
 	// The human readable error message
 	Message string `json:"message"`
 }
@@ -351,11 +301,6 @@ func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultErrorsMutationError) Ge
 	return v.Code
 }
 
-// GetFields returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultErrorsMutationError.Fields, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultErrorsMutationError) GetFields() []string {
-	return v.Fields
-}
-
 // GetMessage returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultErrorsMutationError.Message, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultErrorsMutationError) GetMessage() string {
 	return v.Message
@@ -363,41 +308,11 @@ func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultErrorsMutationError) Ge
 
 // UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase includes the requested fields of the GraphQL type Database.
 type UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase struct {
-	Name           string `json:"name"`
-	Adapter        string `json:"adapter"`
-	Hostname       string `json:"hostname"`
-	Database       string `json:"database"`
-	Ssl            bool   `json:"ssl"`
-	RestrictAccess bool   `json:"restrictAccess"`
+	Id string `json:"id"`
 }
 
-// GetName returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase.Name, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase) GetName() string {
-	return v.Name
-}
-
-// GetAdapter returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase.Adapter, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase) GetAdapter() string {
-	return v.Adapter
-}
-
-// GetHostname returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase.Hostname, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase) GetHostname() string {
-	return v.Hostname
-}
-
-// GetDatabase returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase.Database, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase) GetDatabase() string {
-	return v.Database
-}
-
-// GetSsl returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase.Ssl, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase) GetSsl() bool { return v.Ssl }
-
-// GetRestrictAccess returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase.RestrictAccess, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase) GetRestrictAccess() bool {
-	return v.RestrictAccess
-}
+// GetId returns UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase.Id, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase) GetId() string { return v.Id }
 
 // __CreateDatabaseInput is used internally by genqlient
 type __CreateDatabaseInput struct {
@@ -441,16 +356,9 @@ mutation CreateDatabase ($input: CreateDatabaseInput!) {
 	createDatabase(input: $input) {
 		result {
 			id
-			name
-			adapter
-			hostname
-			database
-			ssl
-			restrictAccess
 		}
 		errors {
 			code
-			fields
 			message
 		}
 	}
@@ -492,7 +400,6 @@ mutation DeleteDatabase ($id: ID!) {
 		}
 		errors {
 			code
-			fields
 			message
 		}
 	}
@@ -571,16 +478,10 @@ const UpdateDatabase_Operation = `
 mutation UpdateDatabase ($id: ID!, $input: UpdateDatabaseInput!) {
 	updateDatabase(id: $id, input: $input) {
 		result {
-			name
-			adapter
-			hostname
-			database
-			ssl
-			restrictAccess
+			id
 		}
 		errors {
 			code
-			fields
 			message
 		}
 	}
