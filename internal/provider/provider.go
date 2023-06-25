@@ -43,7 +43,7 @@ func (p *QueryDeskProvider) Schema(ctx context.Context, req provider.SchemaReque
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"host": schema.StringAttribute{
-				Optional: true,
+				Required: true,
 			},
 			"api_key": schema.StringAttribute{
 				Required:  true,
@@ -131,9 +131,7 @@ func (p *QueryDeskProvider) Resources(ctx context.Context) []func() resource.Res
 }
 
 func (p *QueryDeskProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{
-		NewDatabaseDataSource,
-	}
+	return []func() datasource.DataSource{}
 }
 
 func New(version string) func() provider.Provider {

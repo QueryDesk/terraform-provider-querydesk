@@ -1,3 +1,3 @@
-provider "scaffolding" {
+provider "querydesk" {
   # example configuration here
 }

@@ -21,4 +21,9 @@ Database data source
 
 ### Read-Only
 
+- `adapter` (String) Database name
+- `database` (String) Database name
+- `hostname` (String) Database name
 - `name` (String) Name of the database connection
+- `restrict_access` (Boolean) Database name
+- `ssl` (Boolean) Database name

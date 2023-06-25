@@ -1,11 +1,12 @@
 query GetDatabase($id: ID!) {
   database(id: $id) {
-  name
-  adapter
-  hostname
-  database
-  ssl
-  restrictAccess
+    id
+    name
+    adapter
+    hostname
+    database
+    ssl
+    restrictAccess
   }
 }
 
@@ -37,6 +38,19 @@ mutation UpdateDatabase($id: ID!, $input: UpdateDatabaseInput!) {
       database
       ssl
       restrictAccess
+    }
+    errors {
+      code
+      fields
+      message
+    }
+  }
+}
+
+mutation DeleteDatabase($id: ID!) {
+  deleteDatabase(id: $id) {
+    result {
+      id
     }
     errors {
       code

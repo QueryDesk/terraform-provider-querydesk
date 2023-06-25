@@ -5,7 +5,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"terraform-provider-querydesk/internal/client"
 
@@ -17,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -185,10 +183,19 @@ func (r *DatabaseResource) Read(ctx context.Context, req resource.ReadRequest, r
 	}
 
 	remoteData, err := client.GetDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
+
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to get database",
 			err.Error(),
+		)
+		return
+	}
+
+	if remoteData.Database.Id == "" {
+		resp.Diagnostics.AddError(
+			"Unable to get database",
+			fmt.Sprintf("Database with id %s not found", data.Id.ValueString()),
 		)
 		return
 	}
@@ -226,7 +233,7 @@ func (r *DatabaseResource) Update(ctx context.Context, req resource.UpdateReques
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 
-	remoteData, err := client.UpdateDatabase(ctx, *r.graphqlClient, data.Id.ValueString(), input)
+	_, err := client.UpdateDatabase(ctx, *r.graphqlClient, data.Id.ValueString(), input)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating database",
@@ -234,9 +241,6 @@ func (r *DatabaseResource) Update(ctx context.Context, req resource.UpdateReques
 		)
 		return
 	}
-
-	json, err := json.Marshal(remoteData)
-	tflog.Info(ctx, fmt.Sprintf("json: %s", json))
 
 	// TODO: handle graphql errors
 
@@ -254,13 +258,12 @@ func (r *DatabaseResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	// If applicable, this is a great opportunity to initialize any necessary
-	// provider client data and make a call using it.
-	// httpResp, err := r.client.Do(httpReq)
-	// if err != nil {
-	//     resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete example, got error: %s", err))
-	//     return
-	// }
+	_, err := client.DeleteDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete database, got error: %s", err))
+		return
+	}
+	// TODO: handle graphql errors
 }
 
 func (r *DatabaseResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
