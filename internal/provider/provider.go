@@ -25,7 +25,8 @@ type QueryDeskProvider struct {
 	// version is set to the provider version on release, "dev" when the
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
-	version string
+	version    string
+	testClient *client.MockGraphQLClient
 }
 
 // QueryDeskProviderModel describes the provider data model.
@@ -109,7 +110,7 @@ func (p *QueryDeskProvider) Configure(ctx context.Context, req provider.Configur
 		return
 	}
 
-	client, err := client.NewClient(&host, &api_key)
+	graphqlClient, err := client.NewClient(&host, &api_key)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to Create QueryDesk API Client",
@@ -120,8 +121,14 @@ func (p *QueryDeskProvider) Configure(ctx context.Context, req provider.Configur
 		return
 	}
 
-	resp.DataSourceData = client
-	resp.ResourceData = client
+	myclient := client.GraphQLReq{Context: ctx, Client: *graphqlClient}
+
+	if p.testClient != nil {
+		myclient = client.GraphQLReq(p.testClient)
+	}
+
+	resp.DataSourceData = myclient
+	resp.ResourceData = myclient
 }
 
 func (p *QueryDeskProvider) Resources(ctx context.Context) []func() resource.Resource {
@@ -134,10 +141,11 @@ func (p *QueryDeskProvider) DataSources(ctx context.Context) []func() datasource
 	return []func() datasource.DataSource{}
 }
 
-func New(version string) func() provider.Provider {
+func New(version string, client *client.MockGraphQLClient) func() provider.Provider {
 	return func() provider.Provider {
 		return &QueryDeskProvider{
-			version: version,
+			version:    version,
+			testClient: client,
 		}
 	}
 }

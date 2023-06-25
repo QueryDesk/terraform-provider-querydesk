@@ -1,4 +1,4 @@
-query GetDatabase($id: ID!) {
+query getDatabase($id: ID!) {
   database(id: $id) {
     id
     name
@@ -10,7 +10,7 @@ query GetDatabase($id: ID!) {
   }
 }
 
-mutation CreateDatabase($input: CreateDatabaseInput!) {
+mutation createDatabase($input: CreateDatabaseInput!) {
   createDatabase(input: $input) {
     result {
       id
@@ -22,7 +22,7 @@ mutation CreateDatabase($input: CreateDatabaseInput!) {
   }
 }
 
-mutation UpdateDatabase($id: ID!, $input: UpdateDatabaseInput!) {
+mutation updateDatabase($id: ID!, $input: UpdateDatabaseInput!) {
   updateDatabase(id: $id, input: $input) {
     result {
       id
@@ -34,7 +34,7 @@ mutation UpdateDatabase($id: ID!, $input: UpdateDatabaseInput!) {
   }
 }
 
-mutation DeleteDatabase($id: ID!) {
+mutation deleteDatabase($id: ID!) {
   deleteDatabase(id: $id) {
     result {
       id

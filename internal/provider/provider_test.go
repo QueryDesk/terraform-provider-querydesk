@@ -4,6 +4,7 @@
 package provider
 
 import (
+	"terraform-provider-querydesk/internal/client"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -14,7 +15,7 @@ const (
 	providerConfig = `
 provider "querydesk" {
 	host    = "http://localhost:4000"
-	api_key = "SFMyNTY.g2gDbQAAAB5rZXlfMDFIM0JFWjlENkJSMVc1NUcwSjk5TUswMktuBgDGpe_WiAFiAAFRgA.LiCcHky6wRmzciNtrP2vSQzz4QEvv9qL255BinhfF7I"
+	api_key = "test"
 }
 `
 )
@@ -23,8 +24,10 @@ provider "querydesk" {
 // acceptance testing. The factory function will be invoked for every Terraform
 // CLI command executed to create a provider server to which the CLI can
 // reattach.
-var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
-	"querydesk": providerserver.NewProtocol6WithError(New("test")()),
+func testAccProtoV6ProviderFactories(client *client.MockGraphQLClient) map[string]func() (tfprotov6.ProviderServer, error) {
+	return map[string]func() (tfprotov6.ProviderServer, error){
+		"querydesk": providerserver.NewProtocol6WithError(New("test", client)()),
+	}
 }
 
 func testAccPreCheck(t *testing.T) {

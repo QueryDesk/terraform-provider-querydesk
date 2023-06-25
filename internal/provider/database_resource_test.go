@@ -5,15 +5,18 @@ package provider
 
 import (
 	"fmt"
+	"terraform-provider-querydesk/internal/client"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccDatabaseResource(t *testing.T) {
+	mockClient := client.NewMockGraphQLClient(t)
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories(mockClient),
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{

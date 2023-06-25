@@ -29,7 +29,7 @@ func NewDatabaseResource() resource.Resource {
 
 // DatabaseResource defines the resource implementation.
 type DatabaseResource struct {
-	graphqlClient *graphql.Client
+	graphqlClient client.Client
 }
 
 // DatabaseResourceModel describes the resource data model.
@@ -117,7 +117,7 @@ func (r *DatabaseResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	client, ok := req.ProviderData.(*graphql.Client)
+	graphqlClient, ok := req.ProviderData.(*graphql.Client)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -128,7 +128,7 @@ func (r *DatabaseResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	r.graphqlClient = client
+	r.graphqlClient = client.Client{Context: ctx, Client: *graphqlClient}
 }
 
 func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -153,7 +153,8 @@ func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateReques
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 
-	graphqlResp, err := client.CreateDatabase(ctx, *r.graphqlClient, input)
+	graphqlResp, err := r.graphqlClient.CreateDatabase(input)
+
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating database",
@@ -188,7 +189,7 @@ func (r *DatabaseResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	graphqlResp, err := client.GetDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
+	graphqlResp, err := r.graphqlClient.GetDatabase(data.Id.ValueString())
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -237,7 +238,8 @@ func (r *DatabaseResource) Update(ctx context.Context, req resource.UpdateReques
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 
-	graphqlResp, err := client.UpdateDatabase(ctx, *r.graphqlClient, data.Id.ValueString(), input)
+	graphqlResp, err := r.graphqlClient.UpdateDatabase(data.Id.ValueString(), input)
+
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error updating database",
@@ -269,7 +271,8 @@ func (r *DatabaseResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	graphqlResp, err := client.DeleteDatabase(ctx, *r.graphqlClient, data.Id.ValueString())
+	graphqlResp, err := r.graphqlClient.DeleteDatabase(data.Id.ValueString())
+
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Client Error",
