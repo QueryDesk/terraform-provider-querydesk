@@ -9,10 +9,18 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestAccDatabaseResource(t *testing.T) {
 	mockClient := client.NewMockGraphQLClient(t)
+
+	mockClient.EXPECT().CreateDatabase(
+		mock.AnythingOfType("context.Context"),
+		client.CreateDatabaseInput{
+			Name: "one",
+		},
+	).Return(nil, nil)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },

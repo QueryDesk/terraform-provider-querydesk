@@ -28,7 +28,7 @@ func NewDatabaseResource() resource.Resource {
 
 // DatabaseResource defines the resource implementation.
 type DatabaseResource struct {
-	graphqlClient client.GraphQLReq
+	graphqlClient client.GraphQLClient
 }
 
 // DatabaseResourceModel describes the resource data model.
@@ -116,7 +116,7 @@ func (r *DatabaseResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	graphqlClient, ok := req.ProviderData.(client.GraphQLReq)
+	graphqlClient, ok := req.ProviderData.(client.GraphQLClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

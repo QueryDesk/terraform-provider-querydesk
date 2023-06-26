@@ -25,7 +25,7 @@ type QueryDeskProvider struct {
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
 	version    string
-	testClient *client.MockGraphQLClient
+	testClient client.GraphQLClient
 }
 
 // QueryDeskProviderModel describes the provider data model.
@@ -142,7 +142,7 @@ func (p *QueryDeskProvider) DataSources(ctx context.Context) []func() datasource
 	return []func() datasource.DataSource{}
 }
 
-func New(version string, client *client.MockGraphQLClient) func() provider.Provider {
+func New(version string, client client.GraphQLClient) func() provider.Provider {
 	return func() provider.Provider {
 		return &QueryDeskProvider{
 			version:    version,
