@@ -6,7 +6,6 @@ package provider
 import (
 	"context"
 	"os"
-
 	"terraform-provider-querydesk/internal/client"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -121,11 +120,13 @@ func (p *QueryDeskProvider) Configure(ctx context.Context, req provider.Configur
 		return
 	}
 
-	myclient := client.GraphQLReq{Client: *graphqlClient}
+	var myclient client.GraphQLClient
 
-	// if p.testClient != nil {
-	// 	myclient = client.GraphQLReq(p.testClient)
-	// }
+	myclient = client.GraphQLReq{Client: *graphqlClient}
+
+	if p.testClient != nil {
+		myclient = p.testClient
+	}
 
 	resp.DataSourceData = myclient
 	resp.ResourceData = myclient
