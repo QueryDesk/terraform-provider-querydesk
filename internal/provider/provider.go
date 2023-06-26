@@ -121,11 +121,11 @@ func (p *QueryDeskProvider) Configure(ctx context.Context, req provider.Configur
 		return
 	}
 
-	myclient := client.GraphQLReq{Context: ctx, Client: *graphqlClient}
+	myclient := client.GraphQLReq{Client: *graphqlClient}
 
-	if p.testClient != nil {
-		myclient = client.GraphQLReq(p.testClient)
-	}
+	// if p.testClient != nil {
+	// 	myclient = client.GraphQLReq(p.testClient)
+	// }
 
 	resp.DataSourceData = myclient
 	resp.ResourceData = myclient

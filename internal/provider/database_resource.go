@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"terraform-provider-querydesk/internal/client"
 
-	"github.com/Khan/genqlient/graphql"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -29,7 +28,7 @@ func NewDatabaseResource() resource.Resource {
 
 // DatabaseResource defines the resource implementation.
 type DatabaseResource struct {
-	graphqlClient client.Client
+	graphqlClient client.GraphQLReq
 }
 
 // DatabaseResourceModel describes the resource data model.
@@ -117,18 +116,18 @@ func (r *DatabaseResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	graphqlClient, ok := req.ProviderData.(*graphql.Client)
+	graphqlClient, ok := req.ProviderData.(client.GraphQLReq)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *client.GraphQLReq, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
 	}
 
-	r.graphqlClient = client.Client{Context: ctx, Client: *graphqlClient}
+	r.graphqlClient = graphqlClient
 }
 
 func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -153,7 +152,7 @@ func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateReques
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 
-	graphqlResp, err := r.graphqlClient.CreateDatabase(input)
+	graphqlResp, err := r.graphqlClient.CreateDatabase(ctx, input)
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -189,7 +188,7 @@ func (r *DatabaseResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	graphqlResp, err := r.graphqlClient.GetDatabase(data.Id.ValueString())
+	graphqlResp, err := r.graphqlClient.GetDatabase(ctx, data.Id.ValueString())
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -238,7 +237,7 @@ func (r *DatabaseResource) Update(ctx context.Context, req resource.UpdateReques
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 
-	graphqlResp, err := r.graphqlClient.UpdateDatabase(data.Id.ValueString(), input)
+	graphqlResp, err := r.graphqlClient.UpdateDatabase(ctx, data.Id.ValueString(), input)
 
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -271,7 +270,7 @@ func (r *DatabaseResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	graphqlResp, err := r.graphqlClient.DeleteDatabase(data.Id.ValueString())
+	graphqlResp, err := r.graphqlClient.DeleteDatabase(ctx, data.Id.ValueString())
 
 	if err != nil {
 		resp.Diagnostics.AddError(
