@@ -32,30 +32,45 @@ func NewClient(host *string, apiKey *string) (*graphql.Client, error) {
 	return &c, nil
 }
 
+type GetDatabaseResponse = getDatabaseResponse
+type GetDatabaseDatabase = getDatabaseDatabase
+
+type CreateDatabaseResponse = createDatabaseResponse
+type CreateDatabaseCreateDatabaseCreateDatabaseResult = createDatabaseCreateDatabaseCreateDatabaseResult
+type CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase = createDatabaseCreateDatabaseCreateDatabaseResultResultDatabase
+
+type UpdateDatabaseResponse = updateDatabaseResponse
+type UpdateDatabaseUpdateDatabaseUpdateDatabaseResult = updateDatabaseUpdateDatabaseUpdateDatabaseResult
+type UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase = updateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase
+
+type DeleteDatabaseResponse = deleteDatabaseResponse
+type DeleteDatabaseDeleteDatabaseDeleteDatabaseResult = deleteDatabaseDeleteDatabaseDeleteDatabaseResult
+type DeleteDatabaseDeleteDatabaseDeleteDatabaseResultResultDatabase = deleteDatabaseDeleteDatabaseDeleteDatabaseResultResultDatabase
+
 //go:generate mockery --name GraphQLClient
 type GraphQLClient interface {
-	GetDatabase(ctx context.Context, id string) (*getDatabaseResponse, error)
-	CreateDatabase(ctx context.Context, input CreateDatabaseInput) (*createDatabaseResponse, error)
-	UpdateDatabase(ctx context.Context, id string, input UpdateDatabaseInput) (*updateDatabaseResponse, error)
-	DeleteDatabase(ctx context.Context, id string) (*deleteDatabaseResponse, error)
+	GetDatabase(ctx context.Context, id string) (*GetDatabaseResponse, error)
+	CreateDatabase(ctx context.Context, input CreateDatabaseInput) (*CreateDatabaseResponse, error)
+	UpdateDatabase(ctx context.Context, id string, input UpdateDatabaseInput) (*UpdateDatabaseResponse, error)
+	DeleteDatabase(ctx context.Context, id string) (*DeleteDatabaseResponse, error)
 }
 
 type GraphQLReq struct {
 	Client graphql.Client
 }
 
-func (c GraphQLReq) GetDatabase(ctx context.Context, id string) (*getDatabaseResponse, error) {
+func (c GraphQLReq) GetDatabase(ctx context.Context, id string) (*GetDatabaseResponse, error) {
 	return getDatabase(ctx, c.Client, id)
 }
 
-func (c GraphQLReq) CreateDatabase(ctx context.Context, input CreateDatabaseInput) (*createDatabaseResponse, error) {
+func (c GraphQLReq) CreateDatabase(ctx context.Context, input CreateDatabaseInput) (*CreateDatabaseResponse, error) {
 	return createDatabase(ctx, c.Client, input)
 }
 
-func (c GraphQLReq) UpdateDatabase(ctx context.Context, id string, input UpdateDatabaseInput) (*updateDatabaseResponse, error) {
+func (c GraphQLReq) UpdateDatabase(ctx context.Context, id string, input UpdateDatabaseInput) (*UpdateDatabaseResponse, error) {
 	return updateDatabase(ctx, c.Client, id, input)
 }
 
-func (c GraphQLReq) DeleteDatabase(ctx context.Context, id string) (*deleteDatabaseResponse, error) {
+func (c GraphQLReq) DeleteDatabase(ctx context.Context, id string) (*DeleteDatabaseResponse, error) {
 	return deleteDatabase(ctx, c.Client, id)
 }
