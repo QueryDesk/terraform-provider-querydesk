@@ -47,7 +47,7 @@ type DeleteDatabaseResponse = deleteDatabaseResponse
 type DeleteDatabaseDeleteDatabaseDeleteDatabaseResult = deleteDatabaseDeleteDatabaseDeleteDatabaseResult
 type DeleteDatabaseDeleteDatabaseDeleteDatabaseResultResultDatabase = deleteDatabaseDeleteDatabaseDeleteDatabaseResultResultDatabase
 
-//go:generate mockery --name GraphQLClient
+//go:generate go run github.com/vektra/mockery/v2 --name GraphQLClient
 type GraphQLClient interface {
 	GetDatabase(ctx context.Context, id string) (*GetDatabaseResponse, error)
 	CreateDatabase(ctx context.Context, input CreateDatabaseInput) (*CreateDatabaseResponse, error)

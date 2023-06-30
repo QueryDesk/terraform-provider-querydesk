@@ -11,4 +11,5 @@ import (
 	// graphql generation
 	_ "github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs"
 	_ "github.com/suessflorian/gqlfetch"
+	_ "github.com/vektra/mockery/v2"
 )
