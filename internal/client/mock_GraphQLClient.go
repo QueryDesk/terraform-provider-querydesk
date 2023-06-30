@@ -21,6 +21,61 @@ func (_m *MockGraphQLClient) EXPECT() *MockGraphQLClient_Expecter {
 	return &MockGraphQLClient_Expecter{mock: &_m.Mock}
 }
 
+// CreateCredential provides a mock function with given fields: ctx, input
+func (_m *MockGraphQLClient) CreateCredential(ctx context.Context, input CreateCredentialInput) (*createCredentialResponse, error) {
+	ret := _m.Called(ctx, input)
+
+	var r0 *createCredentialResponse
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, CreateCredentialInput) (*createCredentialResponse, error)); ok {
+		return rf(ctx, input)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, CreateCredentialInput) *createCredentialResponse); ok {
+		r0 = rf(ctx, input)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*createCredentialResponse)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, CreateCredentialInput) error); ok {
+		r1 = rf(ctx, input)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockGraphQLClient_CreateCredential_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateCredential'
+type MockGraphQLClient_CreateCredential_Call struct {
+	*mock.Call
+}
+
+// CreateCredential is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input CreateCredentialInput
+func (_e *MockGraphQLClient_Expecter) CreateCredential(ctx interface{}, input interface{}) *MockGraphQLClient_CreateCredential_Call {
+	return &MockGraphQLClient_CreateCredential_Call{Call: _e.mock.On("CreateCredential", ctx, input)}
+}
+
+func (_c *MockGraphQLClient_CreateCredential_Call) Run(run func(ctx context.Context, input CreateCredentialInput)) *MockGraphQLClient_CreateCredential_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(CreateCredentialInput))
+	})
+	return _c
+}
+
+func (_c *MockGraphQLClient_CreateCredential_Call) Return(_a0 *createCredentialResponse, _a1 error) *MockGraphQLClient_CreateCredential_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockGraphQLClient_CreateCredential_Call) RunAndReturn(run func(context.Context, CreateCredentialInput) (*createCredentialResponse, error)) *MockGraphQLClient_CreateCredential_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateDatabase provides a mock function with given fields: ctx, input
 func (_m *MockGraphQLClient) CreateDatabase(ctx context.Context, input CreateDatabaseInput) (*createDatabaseResponse, error) {
 	ret := _m.Called(ctx, input)
@@ -72,6 +127,61 @@ func (_c *MockGraphQLClient_CreateDatabase_Call) Return(_a0 *createDatabaseRespo
 }
 
 func (_c *MockGraphQLClient_CreateDatabase_Call) RunAndReturn(run func(context.Context, CreateDatabaseInput) (*createDatabaseResponse, error)) *MockGraphQLClient_CreateDatabase_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteCredential provides a mock function with given fields: ctx, id
+func (_m *MockGraphQLClient) DeleteCredential(ctx context.Context, id string) (*deleteCredentialResponse, error) {
+	ret := _m.Called(ctx, id)
+
+	var r0 *deleteCredentialResponse
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*deleteCredentialResponse, error)); ok {
+		return rf(ctx, id)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string) *deleteCredentialResponse); ok {
+		r0 = rf(ctx, id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*deleteCredentialResponse)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockGraphQLClient_DeleteCredential_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteCredential'
+type MockGraphQLClient_DeleteCredential_Call struct {
+	*mock.Call
+}
+
+// DeleteCredential is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *MockGraphQLClient_Expecter) DeleteCredential(ctx interface{}, id interface{}) *MockGraphQLClient_DeleteCredential_Call {
+	return &MockGraphQLClient_DeleteCredential_Call{Call: _e.mock.On("DeleteCredential", ctx, id)}
+}
+
+func (_c *MockGraphQLClient_DeleteCredential_Call) Run(run func(ctx context.Context, id string)) *MockGraphQLClient_DeleteCredential_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockGraphQLClient_DeleteCredential_Call) Return(_a0 *deleteCredentialResponse, _a1 error) *MockGraphQLClient_DeleteCredential_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockGraphQLClient_DeleteCredential_Call) RunAndReturn(run func(context.Context, string) (*deleteCredentialResponse, error)) *MockGraphQLClient_DeleteCredential_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -131,6 +241,61 @@ func (_c *MockGraphQLClient_DeleteDatabase_Call) RunAndReturn(run func(context.C
 	return _c
 }
 
+// GetCredential provides a mock function with given fields: ctx, id
+func (_m *MockGraphQLClient) GetCredential(ctx context.Context, id string) (*getCredentialResponse, error) {
+	ret := _m.Called(ctx, id)
+
+	var r0 *getCredentialResponse
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*getCredentialResponse, error)); ok {
+		return rf(ctx, id)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string) *getCredentialResponse); ok {
+		r0 = rf(ctx, id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*getCredentialResponse)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockGraphQLClient_GetCredential_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetCredential'
+type MockGraphQLClient_GetCredential_Call struct {
+	*mock.Call
+}
+
+// GetCredential is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *MockGraphQLClient_Expecter) GetCredential(ctx interface{}, id interface{}) *MockGraphQLClient_GetCredential_Call {
+	return &MockGraphQLClient_GetCredential_Call{Call: _e.mock.On("GetCredential", ctx, id)}
+}
+
+func (_c *MockGraphQLClient_GetCredential_Call) Run(run func(ctx context.Context, id string)) *MockGraphQLClient_GetCredential_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *MockGraphQLClient_GetCredential_Call) Return(_a0 *getCredentialResponse, _a1 error) *MockGraphQLClient_GetCredential_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockGraphQLClient_GetCredential_Call) RunAndReturn(run func(context.Context, string) (*getCredentialResponse, error)) *MockGraphQLClient_GetCredential_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetDatabase provides a mock function with given fields: ctx, id
 func (_m *MockGraphQLClient) GetDatabase(ctx context.Context, id string) (*getDatabaseResponse, error) {
 	ret := _m.Called(ctx, id)
@@ -182,6 +347,62 @@ func (_c *MockGraphQLClient_GetDatabase_Call) Return(_a0 *getDatabaseResponse, _
 }
 
 func (_c *MockGraphQLClient_GetDatabase_Call) RunAndReturn(run func(context.Context, string) (*getDatabaseResponse, error)) *MockGraphQLClient_GetDatabase_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateCredential provides a mock function with given fields: ctx, id, input
+func (_m *MockGraphQLClient) UpdateCredential(ctx context.Context, id string, input UpdateCredentialInput) (*updateCredentialResponse, error) {
+	ret := _m.Called(ctx, id, input)
+
+	var r0 *updateCredentialResponse
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string, UpdateCredentialInput) (*updateCredentialResponse, error)); ok {
+		return rf(ctx, id, input)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string, UpdateCredentialInput) *updateCredentialResponse); ok {
+		r0 = rf(ctx, id, input)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*updateCredentialResponse)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string, UpdateCredentialInput) error); ok {
+		r1 = rf(ctx, id, input)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MockGraphQLClient_UpdateCredential_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateCredential'
+type MockGraphQLClient_UpdateCredential_Call struct {
+	*mock.Call
+}
+
+// UpdateCredential is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+//   - input UpdateCredentialInput
+func (_e *MockGraphQLClient_Expecter) UpdateCredential(ctx interface{}, id interface{}, input interface{}) *MockGraphQLClient_UpdateCredential_Call {
+	return &MockGraphQLClient_UpdateCredential_Call{Call: _e.mock.On("UpdateCredential", ctx, id, input)}
+}
+
+func (_c *MockGraphQLClient_UpdateCredential_Call) Run(run func(ctx context.Context, id string, input UpdateCredentialInput)) *MockGraphQLClient_UpdateCredential_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(string), args[2].(UpdateCredentialInput))
+	})
+	return _c
+}
+
+func (_c *MockGraphQLClient_UpdateCredential_Call) Return(_a0 *updateCredentialResponse, _a1 error) *MockGraphQLClient_UpdateCredential_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MockGraphQLClient_UpdateCredential_Call) RunAndReturn(run func(context.Context, string, UpdateCredentialInput) (*updateCredentialResponse, error)) *MockGraphQLClient_UpdateCredential_Call {
 	_c.Call.Return(run)
 	return _c
 }

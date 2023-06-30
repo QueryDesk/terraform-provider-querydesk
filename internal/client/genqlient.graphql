@@ -45,3 +45,51 @@ mutation deleteDatabase($id: ID!) {
     }
   }
 }
+
+query getCredential($id: ID!) {
+  credential(id: $id) {
+    id
+    description
+    username
+    reviewsRequired
+    database {
+      id
+    }
+  }
+}
+
+mutation createCredential($input: CreateCredentialInput!) {
+  createCredential(input: $input) {
+    result {
+      id
+    }
+    errors {
+      code
+      message
+    }
+  }
+}
+
+mutation updateCredential($id: ID!, $input: UpdateCredentialInput!) {
+  updateCredential(id: $id, input: $input) {
+    result {
+      id
+    }
+    errors {
+      code
+      message
+    }
+  }
+}
+
+mutation deleteCredential($id: ID!) {
+  deleteCredential(id: $id) {
+    result {
+      id
+    }
+    errors {
+      code
+      message
+    }
+  }
+}

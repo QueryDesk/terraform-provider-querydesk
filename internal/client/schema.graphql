@@ -3,6 +3,11 @@ schema {
   query: RootQueryType
 }
 
+enum DatabaseAdapter {
+  POSTGRES
+  MYSQL
+}
+
 "The result of the :delete_database mutation"
 type DeleteDatabaseResult {
   "The record that was successfully deleted"
@@ -23,7 +28,7 @@ type UpdateDatabaseResult {
 
 input UpdateDatabaseInput {
   name: String
-  adapter: String
+  adapter: DatabaseAdapter
   hostname: String
   database: String
   ssl: Boolean
@@ -45,7 +50,7 @@ type CreateDatabaseResult {
 
 input CreateDatabaseInput {
   name: String!
-  adapter: String!
+  adapter: DatabaseAdapter!
   hostname: String!
   database: String!
   ssl: Boolean
@@ -56,14 +61,240 @@ input CreateDatabaseInput {
   agentId: String
 }
 
+input DatabaseFilterRestrictAccess {
+  isNil: Boolean
+  eq: Boolean
+  notEq: Boolean
+  in: [Boolean!]
+  lessThan: Boolean
+  greaterThan: Boolean
+  lessThanOrEqual: Boolean
+  greaterThanOrEqual: Boolean
+}
+
+input DatabaseFilterSsl {
+  isNil: Boolean
+  eq: Boolean
+  notEq: Boolean
+  in: [Boolean!]
+  lessThan: Boolean
+  greaterThan: Boolean
+  lessThanOrEqual: Boolean
+  greaterThanOrEqual: Boolean
+}
+
+input DatabaseFilterDatabase {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input DatabaseFilterHostname {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input DatabaseFilterAdapter {
+  isNil: Boolean
+  eq: DatabaseAdapter
+  notEq: DatabaseAdapter
+  in: [DatabaseAdapter!]
+  lessThan: DatabaseAdapter
+  greaterThan: DatabaseAdapter
+  lessThanOrEqual: DatabaseAdapter
+  greaterThanOrEqual: DatabaseAdapter
+}
+
+input DatabaseFilterName {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input DatabaseFilterId {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input DatabaseFilterInput {
+  and: [DatabaseFilterInput!]
+  or: [DatabaseFilterInput!]
+  id: DatabaseFilterId
+  name: DatabaseFilterName
+  adapter: DatabaseFilterAdapter
+  hostname: DatabaseFilterHostname
+  database: DatabaseFilterDatabase
+  ssl: DatabaseFilterSsl
+  restrictAccess: DatabaseFilterRestrictAccess
+  defaultCredential: CredentialFilterInput
+  credentials: CredentialFilterInput
+}
+
 type Database {
   id: ID!
   name: String!
-  adapter: String!
+  adapter: DatabaseAdapter!
   hostname: String!
   database: String!
   ssl: Boolean!
   restrictAccess: Boolean!
+  defaultCredential: Credential
+  credentials(
+    "How to sort the records in the response"
+    sort: [CredentialSortInput]
+
+    "A filter to limit the results"
+    filter: CredentialFilterInput
+
+    "The number of records to return."
+    limit: Int
+
+    "The number of records to skip."
+    offset: Int
+  ): [Credential!]!
+}
+
+"The result of the :delete_credential mutation"
+type DeleteCredentialResult {
+  "The record that was successfully deleted"
+  result: Credential
+
+  "Any errors generated, if the mutation failed"
+  errors: [MutationError]
+}
+
+"The result of the :update_credential mutation"
+type UpdateCredentialResult {
+  "The successful result of the mutation"
+  result: Credential
+
+  "Any errors generated, if the mutation failed"
+  errors: [MutationError]
+}
+
+input UpdateCredentialInput {
+  description: String
+  username: String
+  reviewsRequired: Int
+  password: String
+}
+
+"The result of the :create_credential mutation"
+type CreateCredentialResult {
+  "The successful result of the mutation"
+  result: Credential
+
+  "Any errors generated, if the mutation failed"
+  errors: [MutationError]
+}
+
+input CreateCredentialInput {
+  description: String
+  username: String!
+  reviewsRequired: Int!
+  password: String!
+  databaseId: String!
+}
+
+enum CredentialSortField {
+  ID
+  DESCRIPTION
+  USERNAME
+  REVIEWS_REQUIRED
+}
+
+input CredentialFilterReviewsRequired {
+  isNil: Boolean
+  eq: Int
+  notEq: Int
+  in: [Int!]
+  lessThan: Int
+  greaterThan: Int
+  lessThanOrEqual: Int
+  greaterThanOrEqual: Int
+}
+
+input CredentialFilterUsername {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input CredentialFilterDescription {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input CredentialFilterId {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input CredentialFilterInput {
+  and: [CredentialFilterInput!]
+  or: [CredentialFilterInput!]
+  id: CredentialFilterId
+  description: CredentialFilterDescription
+  username: CredentialFilterUsername
+  reviewsRequired: CredentialFilterReviewsRequired
+  database: DatabaseFilterInput
+}
+
+input CredentialSortInput {
+  order: SortOrder
+  field: CredentialSortField!
+}
+
+type Credential {
+  id: ID!
+  description: String
+  username: String!
+  reviewsRequired: Int!
+  database: Database!
+}
+
+enum SortOrder {
+  DESC
+  ASC
 }
 
 "An error generated by a failed mutation"
@@ -85,6 +316,10 @@ type MutationError {
 }
 
 type RootQueryType {
+  credential(
+    "The id of the record"
+    id: ID!
+  ): Credential
   database(
     "The id of the record"
     id: ID!
@@ -92,6 +327,9 @@ type RootQueryType {
 }
 
 type RootMutationType {
+  createCredential(input: CreateCredentialInput): CreateCredentialResult
+  updateCredential(id: ID, input: UpdateCredentialInput): UpdateCredentialResult
+  deleteCredential(id: ID): DeleteCredentialResult
   createDatabase(input: CreateDatabaseInput): CreateDatabaseResult
   updateDatabase(id: ID, input: UpdateDatabaseInput): UpdateDatabaseResult
   deleteDatabase(id: ID): DeleteDatabaseResult

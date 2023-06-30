@@ -26,7 +26,7 @@ resource "querydesk_database" "example" {
 
 ### Required
 
-- `adapter` (String) The adapter to use to establish the connection. Currently only `postgres` and `mysql` are supported, but  sql server is on the roadmap.
+- `adapter` (String) The adapter to use to establish the connection. Currently only `POSTGRES` and `MYSQL` are supported, but  sql server is on the roadmap.
 - `database` (String) The name of the database to connect to.
 - `hostname` (String) The hostname for connecting to the database, either an ip or url.
 - `name` (String) The name for users to use to identity the database.
