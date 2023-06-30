@@ -1,0 +1,47 @@
+query getDatabase($id: ID!) {
+  database(id: $id) {
+    id
+    name
+    adapter
+    hostname
+    database
+    ssl
+    restrictAccess
+  }
+}
+
+mutation createDatabase($input: CreateDatabaseInput!) {
+  createDatabase(input: $input) {
+    result {
+      id
+    }
+    errors {
+      code
+      message
+    }
+  }
+}
+
+mutation updateDatabase($id: ID!, $input: UpdateDatabaseInput!) {
+  updateDatabase(id: $id, input: $input) {
+    result {
+      id
+    }
+    errors {
+      code
+      message
+    }
+  }
+}
+
+mutation deleteDatabase($id: ID!) {
+  deleteDatabase(id: $id) {
+    result {
+      id
+    }
+    errors {
+      code
+      message
+    }
+  }
+}
