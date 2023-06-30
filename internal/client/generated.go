@@ -58,9 +58,9 @@ type UpdateDatabaseInput struct {
 	Database       string `json:"database"`
 	Ssl            bool   `json:"ssl"`
 	RestrictAccess bool   `json:"restrictAccess"`
-	NewCacertfile  string `json:"newCacertfile"`
-	NewKeyfile     string `json:"newKeyfile"`
-	NewCertfile    string `json:"newCertfile"`
+	Cacertfile     string `json:"cacertfile"`
+	Keyfile        string `json:"keyfile"`
+	Certfile       string `json:"certfile"`
 	AgentId        string `json:"agentId"`
 }
 
@@ -82,14 +82,14 @@ func (v *UpdateDatabaseInput) GetSsl() bool { return v.Ssl }
 // GetRestrictAccess returns UpdateDatabaseInput.RestrictAccess, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseInput) GetRestrictAccess() bool { return v.RestrictAccess }
 
-// GetNewCacertfile returns UpdateDatabaseInput.NewCacertfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetNewCacertfile() string { return v.NewCacertfile }
+// GetCacertfile returns UpdateDatabaseInput.Cacertfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetCacertfile() string { return v.Cacertfile }
 
-// GetNewKeyfile returns UpdateDatabaseInput.NewKeyfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetNewKeyfile() string { return v.NewKeyfile }
+// GetKeyfile returns UpdateDatabaseInput.Keyfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetKeyfile() string { return v.Keyfile }
 
-// GetNewCertfile returns UpdateDatabaseInput.NewCertfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetNewCertfile() string { return v.NewCertfile }
+// GetCertfile returns UpdateDatabaseInput.Certfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetCertfile() string { return v.Certfile }
 
 // GetAgentId returns UpdateDatabaseInput.AgentId, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseInput) GetAgentId() string { return v.AgentId }

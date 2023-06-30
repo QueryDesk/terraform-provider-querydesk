@@ -47,7 +47,7 @@ func TestAccDatabaseResource(t *testing.T) {
 	mockClient.EXPECT().UpdateDatabase(
 		mock.Anything,
 		dbId,
-		client.UpdateDatabaseInput{Name: "two", Adapter: "postgres", Hostname: "localhost", Database: "mydb", Ssl: false, RestrictAccess: true, NewCacertfile: "", NewKeyfile: "", NewCertfile: "", AgentId: ""},
+		client.UpdateDatabaseInput{Name: "two", Adapter: "postgres", Hostname: "localhost", Database: "mydb", Ssl: false, RestrictAccess: true, Cacertfile: "", Keyfile: "", Certfile: "", AgentId: ""},
 	).Return(&client.UpdateDatabaseResponse{
 		UpdateDatabase: client.UpdateDatabaseUpdateDatabaseUpdateDatabaseResult{
 			Result: client.UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase{
