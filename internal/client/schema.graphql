@@ -33,9 +33,9 @@ input UpdateDatabaseInput {
   database: String
   ssl: Boolean
   restrictAccess: Boolean
-  cacertfile: String
-  keyfile: String
-  certfile: String
+  newCacertfile: String
+  newKeyfile: String
+  newCertfile: String
   agentId: String
 }
 
@@ -198,7 +198,7 @@ input UpdateCredentialInput {
   description: String
   username: String
   reviewsRequired: Int
-  password: String
+  newPassword: String
 }
 
 "The result of the :create_credential mutation"

@@ -65,9 +65,9 @@ func TestAccDatabaseResource(t *testing.T) {
 			Database:       "mydb",
 			Ssl:            false,
 			RestrictAccess: true,
-			Cacertfile:     "",
-			Keyfile:        "",
-			Certfile:       "",
+			NewCacertfile:  "",
+			NewKeyfile:     "",
+			NewCertfile:    "",
 			AgentId:        "",
 		},
 	).Return(&client.UpdateDatabaseResponse{

@@ -197,7 +197,7 @@ func (r *DatabaseUserResource) Update(ctx context.Context, req resource.UpdateRe
 
 	input := client.UpdateCredentialInput{
 		Description:     data.Description.ValueString(),
-		Password:        data.Password.ValueString(),
+		NewPassword:     data.Password.ValueString(),
 		ReviewsRequired: int(data.ReviewsRequired.ValueInt64()),
 		Username:        data.Username.ValueString(),
 	}

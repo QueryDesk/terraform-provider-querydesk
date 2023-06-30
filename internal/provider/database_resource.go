@@ -250,9 +250,9 @@ func (r *DatabaseResource) Update(ctx context.Context, req resource.UpdateReques
 		Hostname:       data.Hostname.ValueString(),
 		Database:       data.Database.ValueString(),
 		Ssl:            data.Ssl.ValueBool(),
-		Cacertfile:     data.CaCertFile.ValueString(),
-		Keyfile:        data.KeyFile.ValueString(),
-		Certfile:       data.CertFile.ValueString(),
+		NewCacertfile:  data.CaCertFile.ValueString(),
+		NewKeyfile:     data.KeyFile.ValueString(),
+		NewCertfile:    data.CertFile.ValueString(),
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 

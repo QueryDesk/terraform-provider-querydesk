@@ -85,7 +85,7 @@ type UpdateCredentialInput struct {
 	Description     string `json:"description"`
 	Username        string `json:"username"`
 	ReviewsRequired int    `json:"reviewsRequired"`
-	Password        string `json:"password"`
+	NewPassword     string `json:"newPassword"`
 }
 
 // GetDescription returns UpdateCredentialInput.Description, and is useful for accessing the field via an interface.
@@ -97,8 +97,8 @@ func (v *UpdateCredentialInput) GetUsername() string { return v.Username }
 // GetReviewsRequired returns UpdateCredentialInput.ReviewsRequired, and is useful for accessing the field via an interface.
 func (v *UpdateCredentialInput) GetReviewsRequired() int { return v.ReviewsRequired }
 
-// GetPassword returns UpdateCredentialInput.Password, and is useful for accessing the field via an interface.
-func (v *UpdateCredentialInput) GetPassword() string { return v.Password }
+// GetNewPassword returns UpdateCredentialInput.NewPassword, and is useful for accessing the field via an interface.
+func (v *UpdateCredentialInput) GetNewPassword() string { return v.NewPassword }
 
 type UpdateDatabaseInput struct {
 	Name           string          `json:"name"`
@@ -107,9 +107,9 @@ type UpdateDatabaseInput struct {
 	Database       string          `json:"database"`
 	Ssl            bool            `json:"ssl"`
 	RestrictAccess bool            `json:"restrictAccess"`
-	Cacertfile     string          `json:"cacertfile"`
-	Keyfile        string          `json:"keyfile"`
-	Certfile       string          `json:"certfile"`
+	NewCacertfile  string          `json:"newCacertfile"`
+	NewKeyfile     string          `json:"newKeyfile"`
+	NewCertfile    string          `json:"newCertfile"`
 	AgentId        string          `json:"agentId"`
 }
 
@@ -131,14 +131,14 @@ func (v *UpdateDatabaseInput) GetSsl() bool { return v.Ssl }
 // GetRestrictAccess returns UpdateDatabaseInput.RestrictAccess, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseInput) GetRestrictAccess() bool { return v.RestrictAccess }
 
-// GetCacertfile returns UpdateDatabaseInput.Cacertfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetCacertfile() string { return v.Cacertfile }
+// GetNewCacertfile returns UpdateDatabaseInput.NewCacertfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetNewCacertfile() string { return v.NewCacertfile }
 
-// GetKeyfile returns UpdateDatabaseInput.Keyfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetKeyfile() string { return v.Keyfile }
+// GetNewKeyfile returns UpdateDatabaseInput.NewKeyfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetNewKeyfile() string { return v.NewKeyfile }
 
-// GetCertfile returns UpdateDatabaseInput.Certfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetCertfile() string { return v.Certfile }
+// GetNewCertfile returns UpdateDatabaseInput.NewCertfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetNewCertfile() string { return v.NewCertfile }
 
 // GetAgentId returns UpdateDatabaseInput.AgentId, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseInput) GetAgentId() string { return v.AgentId }

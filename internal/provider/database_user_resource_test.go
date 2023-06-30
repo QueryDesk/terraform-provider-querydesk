@@ -56,7 +56,7 @@ func TestAccDatabaseUserResource(t *testing.T) {
 		credId,
 		client.UpdateCredentialInput{
 			Description:     "",
-			Password:        "postgres",
+			NewPassword:     "postgres",
 			ReviewsRequired: 0,
 			Username:        "other_user",
 		},
