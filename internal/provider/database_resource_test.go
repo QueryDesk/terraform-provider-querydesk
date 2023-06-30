@@ -19,7 +19,18 @@ func TestAccDatabaseResource(t *testing.T) {
 
 	mockClient.EXPECT().CreateDatabase(
 		mock.Anything,
-		client.CreateDatabaseInput{Name: "one", Adapter: "postgres", Hostname: "localhost", Database: "mydb", Ssl: false, RestrictAccess: true, Cacertfile: "", Keyfile: "", Certfile: "", AgentId: ""},
+		client.CreateDatabaseInput{
+			Name:           "one",
+			Adapter:        client.DatabaseAdapterPostgres,
+			Hostname:       "localhost",
+			Database:       "mydb",
+			Ssl:            false,
+			RestrictAccess: true,
+			Cacertfile:     "",
+			Keyfile:        "",
+			Certfile:       "",
+			AgentId:        "",
+		},
 	).Return(&client.CreateDatabaseResponse{
 		CreateDatabase: client.CreateDatabaseCreateDatabaseCreateDatabaseResult{
 			Result: client.CreateDatabaseCreateDatabaseCreateDatabaseResultResultDatabase{
@@ -36,7 +47,7 @@ func TestAccDatabaseResource(t *testing.T) {
 		Database: client.GetDatabaseDatabase{
 			Id:             dbId,
 			Name:           "one",
-			Adapter:        "postgres",
+			Adapter:        client.DatabaseAdapterPostgres,
 			Hostname:       "localhost",
 			Database:       "mydb",
 			Ssl:            false,
@@ -47,7 +58,18 @@ func TestAccDatabaseResource(t *testing.T) {
 	mockClient.EXPECT().UpdateDatabase(
 		mock.Anything,
 		dbId,
-		client.UpdateDatabaseInput{Name: "two", Adapter: "postgres", Hostname: "localhost", Database: "mydb", Ssl: false, RestrictAccess: true, Cacertfile: "", Keyfile: "", Certfile: "", AgentId: ""},
+		client.UpdateDatabaseInput{
+			Name:           "two",
+			Adapter:        client.DatabaseAdapterPostgres,
+			Hostname:       "localhost",
+			Database:       "mydb",
+			Ssl:            false,
+			RestrictAccess: true,
+			NewCacertfile:  "",
+			NewKeyfile:     "",
+			NewCertfile:    "",
+			AgentId:        "",
+		},
 	).Return(&client.UpdateDatabaseResponse{
 		UpdateDatabase: client.UpdateDatabaseUpdateDatabaseUpdateDatabaseResult{
 			Result: client.UpdateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase{
@@ -64,7 +86,7 @@ func TestAccDatabaseResource(t *testing.T) {
 		Database: client.GetDatabaseDatabase{
 			Id:             dbId,
 			Name:           "two",
-			Adapter:        "postgres",
+			Adapter:        client.DatabaseAdapterPostgres,
 			Hostname:       "localhost",
 			Database:       "mydb",
 			Ssl:            false,
@@ -120,7 +142,7 @@ func testAccDatabaseResourceConfig(name string) string {
 	return providerConfig + fmt.Sprintf(`
 resource "querydesk_database" "test" {
   name     = %[1]q
-  adapter  = "postgres"
+  adapter  = "POSTGRES"
   hostname = "localhost"
   database = "mydb"
 }

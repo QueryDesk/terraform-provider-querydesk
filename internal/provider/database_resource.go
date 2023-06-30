@@ -33,9 +33,8 @@ type DatabaseResource struct {
 
 // DatabaseResourceModel describes the resource data model.
 type DatabaseResourceModel struct {
-	Id   types.String `tfsdk:"id"`
-	Name types.String `tfsdk:"name"`
-	// TODO: make an enum
+	Id             types.String `tfsdk:"id"`
+	Name           types.String `tfsdk:"name"`
 	Adapter        types.String `tfsdk:"adapter"`
 	Hostname       types.String `tfsdk:"hostname"`
 	Database       types.String `tfsdk:"database"`
@@ -68,7 +67,7 @@ func (r *DatabaseResource) Schema(ctx context.Context, req resource.SchemaReques
 				Required:            true,
 			},
 			"adapter": schema.StringAttribute{
-				MarkdownDescription: "The adapter to use to establish the connection. Currently only `postgres` and `mysql` are supported, but  sql server is on the roadmap.",
+				MarkdownDescription: "The adapter to use to establish the connection. Currently only `POSTGRES` and `MYSQL` are supported, but  sql server is on the roadmap.",
 				Required:            true,
 			},
 			"database": schema.StringAttribute{
@@ -140,9 +139,20 @@ func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
+	var adapter client.DatabaseAdapter
+	switch data.Adapter.ValueString() {
+	case "POSTGRES":
+		adapter = client.DatabaseAdapterPostgres
+	case "MYSQL":
+		adapter = client.DatabaseAdapterMysql
+	default:
+		resp.Diagnostics.AddError("Unexpected Database Adapter", fmt.Sprintf("Expected `POSTGRES` or `MYSQL`, got: %s.", data.Adapter.String()))
+		return
+	}
+
 	input := client.CreateDatabaseInput{
 		Name:           data.Name.ValueString(),
-		Adapter:        data.Adapter.ValueString(),
+		Adapter:        adapter,
 		Hostname:       data.Hostname.ValueString(),
 		Database:       data.Database.ValueString(),
 		Ssl:            data.Ssl.ValueBool(),
@@ -169,8 +179,6 @@ func (r *DatabaseResource) Create(ctx context.Context, req resource.CreateReques
 		)
 		return
 	}
-
-	// TODO: handle graphql errors
 
 	data.Id = types.StringValue(graphqlResp.CreateDatabase.Result.Id)
 
@@ -205,7 +213,7 @@ func (r *DatabaseResource) Read(ctx context.Context, req resource.ReadRequest, r
 	}
 
 	data.Name = types.StringValue(graphqlResp.Database.Name)
-	data.Adapter = types.StringValue(graphqlResp.Database.Adapter)
+	data.Adapter = types.StringValue(string(graphqlResp.Database.Adapter))
 	data.Hostname = types.StringValue(graphqlResp.Database.Hostname)
 	data.Database = types.StringValue(graphqlResp.Database.Database)
 	data.Ssl = types.BoolValue(graphqlResp.Database.Ssl)
@@ -225,15 +233,26 @@ func (r *DatabaseResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
+	var adapter client.DatabaseAdapter
+	switch data.Adapter.ValueString() {
+	case "POSTGRES":
+		adapter = client.DatabaseAdapterPostgres
+	case "MYSQL":
+		adapter = client.DatabaseAdapterMysql
+	default:
+		resp.Diagnostics.AddError("Unexpected Database Adapter", fmt.Sprintf("Expected `POSTGRES` or `MYSQL`, got: %s.", data.Adapter.String()))
+		return
+	}
+
 	input := client.UpdateDatabaseInput{
 		Name:           data.Name.ValueString(),
-		Adapter:        data.Adapter.ValueString(),
+		Adapter:        adapter,
 		Hostname:       data.Hostname.ValueString(),
 		Database:       data.Database.ValueString(),
 		Ssl:            data.Ssl.ValueBool(),
-		Cacertfile:     data.CaCertFile.ValueString(),
-		Keyfile:        data.KeyFile.ValueString(),
-		Certfile:       data.CertFile.ValueString(),
+		NewCacertfile:  data.CaCertFile.ValueString(),
+		NewKeyfile:     data.KeyFile.ValueString(),
+		NewCertfile:    data.CertFile.ValueString(),
 		RestrictAccess: data.RestrictAccess.ValueBool(),
 	}
 

@@ -47,12 +47,32 @@ type DeleteDatabaseResponse = deleteDatabaseResponse
 type DeleteDatabaseDeleteDatabaseDeleteDatabaseResult = deleteDatabaseDeleteDatabaseDeleteDatabaseResult
 type DeleteDatabaseDeleteDatabaseDeleteDatabaseResultResultDatabase = deleteDatabaseDeleteDatabaseDeleteDatabaseResultResultDatabase
 
+type GetCredentialResponse = getCredentialResponse
+type GetCredentialCredential = getCredentialCredential
+type GetCredentialCredentialDatabase = getCredentialCredentialDatabase
+
+type CreateCredentialResponse = createCredentialResponse
+type CreateCredentialCreateCredentialCreateCredentialResult = createCredentialCreateCredentialCreateCredentialResult
+type CreateCredentialCreateCredentialCreateCredentialResultResultCredential = createCredentialCreateCredentialCreateCredentialResultResultCredential
+
+type UpdateCredentialResponse = updateCredentialResponse
+type UpdateCredentialUpdateCredentialUpdateCredentialResult = updateCredentialUpdateCredentialUpdateCredentialResult
+type UpdateCredentialUpdateCredentialUpdateCredentialResultResultCredential = updateCredentialUpdateCredentialUpdateCredentialResultResultCredential
+
+type DeleteCredentialResponse = deleteCredentialResponse
+type DeleteCredentialDeleteCredentialDeleteCredentialResult = deleteCredentialDeleteCredentialDeleteCredentialResult
+type DeleteCredentialDeleteCredentialDeleteCredentialResultResultCredential = deleteCredentialDeleteCredentialDeleteCredentialResultResultCredential
+
 //go:generate go run github.com/vektra/mockery/v2 --name GraphQLClient
 type GraphQLClient interface {
 	GetDatabase(ctx context.Context, id string) (*GetDatabaseResponse, error)
 	CreateDatabase(ctx context.Context, input CreateDatabaseInput) (*CreateDatabaseResponse, error)
 	UpdateDatabase(ctx context.Context, id string, input UpdateDatabaseInput) (*UpdateDatabaseResponse, error)
 	DeleteDatabase(ctx context.Context, id string) (*DeleteDatabaseResponse, error)
+	GetCredential(ctx context.Context, id string) (*GetCredentialResponse, error)
+	CreateCredential(ctx context.Context, input CreateCredentialInput) (*CreateCredentialResponse, error)
+	UpdateCredential(ctx context.Context, id string, input UpdateCredentialInput) (*UpdateCredentialResponse, error)
+	DeleteCredential(ctx context.Context, id string) (*DeleteCredentialResponse, error)
 }
 
 type GraphQLReq struct {
@@ -73,4 +93,20 @@ func (c GraphQLReq) UpdateDatabase(ctx context.Context, id string, input UpdateD
 
 func (c GraphQLReq) DeleteDatabase(ctx context.Context, id string) (*DeleteDatabaseResponse, error) {
 	return deleteDatabase(ctx, c.Client, id)
+}
+
+func (c GraphQLReq) GetCredential(ctx context.Context, id string) (*GetCredentialResponse, error) {
+	return getCredential(ctx, c.Client, id)
+}
+
+func (c GraphQLReq) CreateCredential(ctx context.Context, input CreateCredentialInput) (*CreateCredentialResponse, error) {
+	return createCredential(ctx, c.Client, input)
+}
+
+func (c GraphQLReq) UpdateCredential(ctx context.Context, id string, input UpdateCredentialInput) (*UpdateCredentialResponse, error) {
+	return updateCredential(ctx, c.Client, id, input)
+}
+
+func (c GraphQLReq) DeleteCredential(ctx context.Context, id string) (*DeleteCredentialResponse, error) {
+	return deleteCredential(ctx, c.Client, id)
 }

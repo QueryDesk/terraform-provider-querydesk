@@ -8,24 +8,47 @@ import (
 	"github.com/Khan/genqlient/graphql"
 )
 
+type CreateCredentialInput struct {
+	Description     string `json:"description"`
+	Username        string `json:"username"`
+	ReviewsRequired int    `json:"reviewsRequired"`
+	Password        string `json:"password"`
+	DatabaseId      string `json:"databaseId"`
+}
+
+// GetDescription returns CreateCredentialInput.Description, and is useful for accessing the field via an interface.
+func (v *CreateCredentialInput) GetDescription() string { return v.Description }
+
+// GetUsername returns CreateCredentialInput.Username, and is useful for accessing the field via an interface.
+func (v *CreateCredentialInput) GetUsername() string { return v.Username }
+
+// GetReviewsRequired returns CreateCredentialInput.ReviewsRequired, and is useful for accessing the field via an interface.
+func (v *CreateCredentialInput) GetReviewsRequired() int { return v.ReviewsRequired }
+
+// GetPassword returns CreateCredentialInput.Password, and is useful for accessing the field via an interface.
+func (v *CreateCredentialInput) GetPassword() string { return v.Password }
+
+// GetDatabaseId returns CreateCredentialInput.DatabaseId, and is useful for accessing the field via an interface.
+func (v *CreateCredentialInput) GetDatabaseId() string { return v.DatabaseId }
+
 type CreateDatabaseInput struct {
-	Name           string `json:"name"`
-	Adapter        string `json:"adapter"`
-	Hostname       string `json:"hostname"`
-	Database       string `json:"database"`
-	Ssl            bool   `json:"ssl"`
-	RestrictAccess bool   `json:"restrictAccess"`
-	Cacertfile     string `json:"cacertfile"`
-	Keyfile        string `json:"keyfile"`
-	Certfile       string `json:"certfile"`
-	AgentId        string `json:"agentId"`
+	Name           string          `json:"name"`
+	Adapter        DatabaseAdapter `json:"adapter"`
+	Hostname       string          `json:"hostname"`
+	Database       string          `json:"database"`
+	Ssl            bool            `json:"ssl"`
+	RestrictAccess bool            `json:"restrictAccess"`
+	Cacertfile     string          `json:"cacertfile"`
+	Keyfile        string          `json:"keyfile"`
+	Certfile       string          `json:"certfile"`
+	AgentId        string          `json:"agentId"`
 }
 
 // GetName returns CreateDatabaseInput.Name, and is useful for accessing the field via an interface.
 func (v *CreateDatabaseInput) GetName() string { return v.Name }
 
 // GetAdapter returns CreateDatabaseInput.Adapter, and is useful for accessing the field via an interface.
-func (v *CreateDatabaseInput) GetAdapter() string { return v.Adapter }
+func (v *CreateDatabaseInput) GetAdapter() DatabaseAdapter { return v.Adapter }
 
 // GetHostname returns CreateDatabaseInput.Hostname, and is useful for accessing the field via an interface.
 func (v *CreateDatabaseInput) GetHostname() string { return v.Hostname }
@@ -51,24 +74,50 @@ func (v *CreateDatabaseInput) GetCertfile() string { return v.Certfile }
 // GetAgentId returns CreateDatabaseInput.AgentId, and is useful for accessing the field via an interface.
 func (v *CreateDatabaseInput) GetAgentId() string { return v.AgentId }
 
+type DatabaseAdapter string
+
+const (
+	DatabaseAdapterPostgres DatabaseAdapter = "POSTGRES"
+	DatabaseAdapterMysql    DatabaseAdapter = "MYSQL"
+)
+
+type UpdateCredentialInput struct {
+	Description     string `json:"description"`
+	Username        string `json:"username"`
+	ReviewsRequired int    `json:"reviewsRequired"`
+	NewPassword     string `json:"newPassword"`
+}
+
+// GetDescription returns UpdateCredentialInput.Description, and is useful for accessing the field via an interface.
+func (v *UpdateCredentialInput) GetDescription() string { return v.Description }
+
+// GetUsername returns UpdateCredentialInput.Username, and is useful for accessing the field via an interface.
+func (v *UpdateCredentialInput) GetUsername() string { return v.Username }
+
+// GetReviewsRequired returns UpdateCredentialInput.ReviewsRequired, and is useful for accessing the field via an interface.
+func (v *UpdateCredentialInput) GetReviewsRequired() int { return v.ReviewsRequired }
+
+// GetNewPassword returns UpdateCredentialInput.NewPassword, and is useful for accessing the field via an interface.
+func (v *UpdateCredentialInput) GetNewPassword() string { return v.NewPassword }
+
 type UpdateDatabaseInput struct {
-	Name           string `json:"name"`
-	Adapter        string `json:"adapter"`
-	Hostname       string `json:"hostname"`
-	Database       string `json:"database"`
-	Ssl            bool   `json:"ssl"`
-	RestrictAccess bool   `json:"restrictAccess"`
-	Cacertfile     string `json:"cacertfile"`
-	Keyfile        string `json:"keyfile"`
-	Certfile       string `json:"certfile"`
-	AgentId        string `json:"agentId"`
+	Name           string          `json:"name"`
+	Adapter        DatabaseAdapter `json:"adapter"`
+	Hostname       string          `json:"hostname"`
+	Database       string          `json:"database"`
+	Ssl            bool            `json:"ssl"`
+	RestrictAccess bool            `json:"restrictAccess"`
+	NewCacertfile  string          `json:"newCacertfile"`
+	NewKeyfile     string          `json:"newKeyfile"`
+	NewCertfile    string          `json:"newCertfile"`
+	AgentId        string          `json:"agentId"`
 }
 
 // GetName returns UpdateDatabaseInput.Name, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseInput) GetName() string { return v.Name }
 
 // GetAdapter returns UpdateDatabaseInput.Adapter, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetAdapter() string { return v.Adapter }
+func (v *UpdateDatabaseInput) GetAdapter() DatabaseAdapter { return v.Adapter }
 
 // GetHostname returns UpdateDatabaseInput.Hostname, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseInput) GetHostname() string { return v.Hostname }
@@ -82,17 +131,25 @@ func (v *UpdateDatabaseInput) GetSsl() bool { return v.Ssl }
 // GetRestrictAccess returns UpdateDatabaseInput.RestrictAccess, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseInput) GetRestrictAccess() bool { return v.RestrictAccess }
 
-// GetCacertfile returns UpdateDatabaseInput.Cacertfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetCacertfile() string { return v.Cacertfile }
+// GetNewCacertfile returns UpdateDatabaseInput.NewCacertfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetNewCacertfile() string { return v.NewCacertfile }
 
-// GetKeyfile returns UpdateDatabaseInput.Keyfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetKeyfile() string { return v.Keyfile }
+// GetNewKeyfile returns UpdateDatabaseInput.NewKeyfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetNewKeyfile() string { return v.NewKeyfile }
 
-// GetCertfile returns UpdateDatabaseInput.Certfile, and is useful for accessing the field via an interface.
-func (v *UpdateDatabaseInput) GetCertfile() string { return v.Certfile }
+// GetNewCertfile returns UpdateDatabaseInput.NewCertfile, and is useful for accessing the field via an interface.
+func (v *UpdateDatabaseInput) GetNewCertfile() string { return v.NewCertfile }
 
 // GetAgentId returns UpdateDatabaseInput.AgentId, and is useful for accessing the field via an interface.
 func (v *UpdateDatabaseInput) GetAgentId() string { return v.AgentId }
+
+// __createCredentialInput is used internally by genqlient
+type __createCredentialInput struct {
+	Input CreateCredentialInput `json:"input"`
+}
+
+// GetInput returns __createCredentialInput.Input, and is useful for accessing the field via an interface.
+func (v *__createCredentialInput) GetInput() CreateCredentialInput { return v.Input }
 
 // __createDatabaseInput is used internally by genqlient
 type __createDatabaseInput struct {
@@ -102,6 +159,14 @@ type __createDatabaseInput struct {
 // GetInput returns __createDatabaseInput.Input, and is useful for accessing the field via an interface.
 func (v *__createDatabaseInput) GetInput() CreateDatabaseInput { return v.Input }
 
+// __deleteCredentialInput is used internally by genqlient
+type __deleteCredentialInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __deleteCredentialInput.Id, and is useful for accessing the field via an interface.
+func (v *__deleteCredentialInput) GetId() string { return v.Id }
+
 // __deleteDatabaseInput is used internally by genqlient
 type __deleteDatabaseInput struct {
 	Id string `json:"id"`
@@ -110,6 +175,14 @@ type __deleteDatabaseInput struct {
 // GetId returns __deleteDatabaseInput.Id, and is useful for accessing the field via an interface.
 func (v *__deleteDatabaseInput) GetId() string { return v.Id }
 
+// __getCredentialInput is used internally by genqlient
+type __getCredentialInput struct {
+	Id string `json:"id"`
+}
+
+// GetId returns __getCredentialInput.Id, and is useful for accessing the field via an interface.
+func (v *__getCredentialInput) GetId() string { return v.Id }
+
 // __getDatabaseInput is used internally by genqlient
 type __getDatabaseInput struct {
 	Id string `json:"id"`
@@ -117,6 +190,18 @@ type __getDatabaseInput struct {
 
 // GetId returns __getDatabaseInput.Id, and is useful for accessing the field via an interface.
 func (v *__getDatabaseInput) GetId() string { return v.Id }
+
+// __updateCredentialInput is used internally by genqlient
+type __updateCredentialInput struct {
+	Id    string                `json:"id"`
+	Input UpdateCredentialInput `json:"input"`
+}
+
+// GetId returns __updateCredentialInput.Id, and is useful for accessing the field via an interface.
+func (v *__updateCredentialInput) GetId() string { return v.Id }
+
+// GetInput returns __updateCredentialInput.Input, and is useful for accessing the field via an interface.
+func (v *__updateCredentialInput) GetInput() UpdateCredentialInput { return v.Input }
 
 // __updateDatabaseInput is used internally by genqlient
 type __updateDatabaseInput struct {
@@ -129,6 +214,68 @@ func (v *__updateDatabaseInput) GetId() string { return v.Id }
 
 // GetInput returns __updateDatabaseInput.Input, and is useful for accessing the field via an interface.
 func (v *__updateDatabaseInput) GetInput() UpdateDatabaseInput { return v.Input }
+
+// createCredentialCreateCredentialCreateCredentialResult includes the requested fields of the GraphQL type CreateCredentialResult.
+// The GraphQL type's documentation follows.
+//
+// The result of the :create_credential mutation
+type createCredentialCreateCredentialCreateCredentialResult struct {
+	// The successful result of the mutation
+	Result createCredentialCreateCredentialCreateCredentialResultResultCredential `json:"result"`
+	// Any errors generated, if the mutation failed
+	Errors []createCredentialCreateCredentialCreateCredentialResultErrorsMutationError `json:"errors"`
+}
+
+// GetResult returns createCredentialCreateCredentialCreateCredentialResult.Result, and is useful for accessing the field via an interface.
+func (v *createCredentialCreateCredentialCreateCredentialResult) GetResult() createCredentialCreateCredentialCreateCredentialResultResultCredential {
+	return v.Result
+}
+
+// GetErrors returns createCredentialCreateCredentialCreateCredentialResult.Errors, and is useful for accessing the field via an interface.
+func (v *createCredentialCreateCredentialCreateCredentialResult) GetErrors() []createCredentialCreateCredentialCreateCredentialResultErrorsMutationError {
+	return v.Errors
+}
+
+// createCredentialCreateCredentialCreateCredentialResultErrorsMutationError includes the requested fields of the GraphQL type MutationError.
+// The GraphQL type's documentation follows.
+//
+// An error generated by a failed mutation
+type createCredentialCreateCredentialCreateCredentialResultErrorsMutationError struct {
+	// An error code for the given error
+	Code string `json:"code"`
+	// The human readable error message
+	Message string `json:"message"`
+}
+
+// GetCode returns createCredentialCreateCredentialCreateCredentialResultErrorsMutationError.Code, and is useful for accessing the field via an interface.
+func (v *createCredentialCreateCredentialCreateCredentialResultErrorsMutationError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns createCredentialCreateCredentialCreateCredentialResultErrorsMutationError.Message, and is useful for accessing the field via an interface.
+func (v *createCredentialCreateCredentialCreateCredentialResultErrorsMutationError) GetMessage() string {
+	return v.Message
+}
+
+// createCredentialCreateCredentialCreateCredentialResultResultCredential includes the requested fields of the GraphQL type Credential.
+type createCredentialCreateCredentialCreateCredentialResultResultCredential struct {
+	Id string `json:"id"`
+}
+
+// GetId returns createCredentialCreateCredentialCreateCredentialResultResultCredential.Id, and is useful for accessing the field via an interface.
+func (v *createCredentialCreateCredentialCreateCredentialResultResultCredential) GetId() string {
+	return v.Id
+}
+
+// createCredentialResponse is returned by createCredential on success.
+type createCredentialResponse struct {
+	CreateCredential createCredentialCreateCredentialCreateCredentialResult `json:"createCredential"`
+}
+
+// GetCreateCredential returns createCredentialResponse.CreateCredential, and is useful for accessing the field via an interface.
+func (v *createCredentialResponse) GetCreateCredential() createCredentialCreateCredentialCreateCredentialResult {
+	return v.CreateCredential
+}
 
 // createDatabaseCreateDatabaseCreateDatabaseResult includes the requested fields of the GraphQL type CreateDatabaseResult.
 // The GraphQL type's documentation follows.
@@ -188,6 +335,68 @@ type createDatabaseResponse struct {
 // GetCreateDatabase returns createDatabaseResponse.CreateDatabase, and is useful for accessing the field via an interface.
 func (v *createDatabaseResponse) GetCreateDatabase() createDatabaseCreateDatabaseCreateDatabaseResult {
 	return v.CreateDatabase
+}
+
+// deleteCredentialDeleteCredentialDeleteCredentialResult includes the requested fields of the GraphQL type DeleteCredentialResult.
+// The GraphQL type's documentation follows.
+//
+// The result of the :delete_credential mutation
+type deleteCredentialDeleteCredentialDeleteCredentialResult struct {
+	// The record that was successfully deleted
+	Result deleteCredentialDeleteCredentialDeleteCredentialResultResultCredential `json:"result"`
+	// Any errors generated, if the mutation failed
+	Errors []deleteCredentialDeleteCredentialDeleteCredentialResultErrorsMutationError `json:"errors"`
+}
+
+// GetResult returns deleteCredentialDeleteCredentialDeleteCredentialResult.Result, and is useful for accessing the field via an interface.
+func (v *deleteCredentialDeleteCredentialDeleteCredentialResult) GetResult() deleteCredentialDeleteCredentialDeleteCredentialResultResultCredential {
+	return v.Result
+}
+
+// GetErrors returns deleteCredentialDeleteCredentialDeleteCredentialResult.Errors, and is useful for accessing the field via an interface.
+func (v *deleteCredentialDeleteCredentialDeleteCredentialResult) GetErrors() []deleteCredentialDeleteCredentialDeleteCredentialResultErrorsMutationError {
+	return v.Errors
+}
+
+// deleteCredentialDeleteCredentialDeleteCredentialResultErrorsMutationError includes the requested fields of the GraphQL type MutationError.
+// The GraphQL type's documentation follows.
+//
+// An error generated by a failed mutation
+type deleteCredentialDeleteCredentialDeleteCredentialResultErrorsMutationError struct {
+	// An error code for the given error
+	Code string `json:"code"`
+	// The human readable error message
+	Message string `json:"message"`
+}
+
+// GetCode returns deleteCredentialDeleteCredentialDeleteCredentialResultErrorsMutationError.Code, and is useful for accessing the field via an interface.
+func (v *deleteCredentialDeleteCredentialDeleteCredentialResultErrorsMutationError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns deleteCredentialDeleteCredentialDeleteCredentialResultErrorsMutationError.Message, and is useful for accessing the field via an interface.
+func (v *deleteCredentialDeleteCredentialDeleteCredentialResultErrorsMutationError) GetMessage() string {
+	return v.Message
+}
+
+// deleteCredentialDeleteCredentialDeleteCredentialResultResultCredential includes the requested fields of the GraphQL type Credential.
+type deleteCredentialDeleteCredentialDeleteCredentialResultResultCredential struct {
+	Id string `json:"id"`
+}
+
+// GetId returns deleteCredentialDeleteCredentialDeleteCredentialResultResultCredential.Id, and is useful for accessing the field via an interface.
+func (v *deleteCredentialDeleteCredentialDeleteCredentialResultResultCredential) GetId() string {
+	return v.Id
+}
+
+// deleteCredentialResponse is returned by deleteCredential on success.
+type deleteCredentialResponse struct {
+	DeleteCredential deleteCredentialDeleteCredentialDeleteCredentialResult `json:"deleteCredential"`
+}
+
+// GetDeleteCredential returns deleteCredentialResponse.DeleteCredential, and is useful for accessing the field via an interface.
+func (v *deleteCredentialResponse) GetDeleteCredential() deleteCredentialDeleteCredentialDeleteCredentialResult {
+	return v.DeleteCredential
 }
 
 // deleteDatabaseDeleteDatabaseDeleteDatabaseResult includes the requested fields of the GraphQL type DeleteDatabaseResult.
@@ -250,15 +459,55 @@ func (v *deleteDatabaseResponse) GetDeleteDatabase() deleteDatabaseDeleteDatabas
 	return v.DeleteDatabase
 }
 
+// getCredentialCredential includes the requested fields of the GraphQL type Credential.
+type getCredentialCredential struct {
+	Id              string                          `json:"id"`
+	Description     string                          `json:"description"`
+	Username        string                          `json:"username"`
+	ReviewsRequired int                             `json:"reviewsRequired"`
+	Database        getCredentialCredentialDatabase `json:"database"`
+}
+
+// GetId returns getCredentialCredential.Id, and is useful for accessing the field via an interface.
+func (v *getCredentialCredential) GetId() string { return v.Id }
+
+// GetDescription returns getCredentialCredential.Description, and is useful for accessing the field via an interface.
+func (v *getCredentialCredential) GetDescription() string { return v.Description }
+
+// GetUsername returns getCredentialCredential.Username, and is useful for accessing the field via an interface.
+func (v *getCredentialCredential) GetUsername() string { return v.Username }
+
+// GetReviewsRequired returns getCredentialCredential.ReviewsRequired, and is useful for accessing the field via an interface.
+func (v *getCredentialCredential) GetReviewsRequired() int { return v.ReviewsRequired }
+
+// GetDatabase returns getCredentialCredential.Database, and is useful for accessing the field via an interface.
+func (v *getCredentialCredential) GetDatabase() getCredentialCredentialDatabase { return v.Database }
+
+// getCredentialCredentialDatabase includes the requested fields of the GraphQL type Database.
+type getCredentialCredentialDatabase struct {
+	Id string `json:"id"`
+}
+
+// GetId returns getCredentialCredentialDatabase.Id, and is useful for accessing the field via an interface.
+func (v *getCredentialCredentialDatabase) GetId() string { return v.Id }
+
+// getCredentialResponse is returned by getCredential on success.
+type getCredentialResponse struct {
+	Credential getCredentialCredential `json:"credential"`
+}
+
+// GetCredential returns getCredentialResponse.Credential, and is useful for accessing the field via an interface.
+func (v *getCredentialResponse) GetCredential() getCredentialCredential { return v.Credential }
+
 // getDatabaseDatabase includes the requested fields of the GraphQL type Database.
 type getDatabaseDatabase struct {
-	Id             string `json:"id"`
-	Name           string `json:"name"`
-	Adapter        string `json:"adapter"`
-	Hostname       string `json:"hostname"`
-	Database       string `json:"database"`
-	Ssl            bool   `json:"ssl"`
-	RestrictAccess bool   `json:"restrictAccess"`
+	Id             string          `json:"id"`
+	Name           string          `json:"name"`
+	Adapter        DatabaseAdapter `json:"adapter"`
+	Hostname       string          `json:"hostname"`
+	Database       string          `json:"database"`
+	Ssl            bool            `json:"ssl"`
+	RestrictAccess bool            `json:"restrictAccess"`
 }
 
 // GetId returns getDatabaseDatabase.Id, and is useful for accessing the field via an interface.
@@ -268,7 +517,7 @@ func (v *getDatabaseDatabase) GetId() string { return v.Id }
 func (v *getDatabaseDatabase) GetName() string { return v.Name }
 
 // GetAdapter returns getDatabaseDatabase.Adapter, and is useful for accessing the field via an interface.
-func (v *getDatabaseDatabase) GetAdapter() string { return v.Adapter }
+func (v *getDatabaseDatabase) GetAdapter() DatabaseAdapter { return v.Adapter }
 
 // GetHostname returns getDatabaseDatabase.Hostname, and is useful for accessing the field via an interface.
 func (v *getDatabaseDatabase) GetHostname() string { return v.Hostname }
@@ -289,6 +538,68 @@ type getDatabaseResponse struct {
 
 // GetDatabase returns getDatabaseResponse.Database, and is useful for accessing the field via an interface.
 func (v *getDatabaseResponse) GetDatabase() getDatabaseDatabase { return v.Database }
+
+// updateCredentialResponse is returned by updateCredential on success.
+type updateCredentialResponse struct {
+	UpdateCredential updateCredentialUpdateCredentialUpdateCredentialResult `json:"updateCredential"`
+}
+
+// GetUpdateCredential returns updateCredentialResponse.UpdateCredential, and is useful for accessing the field via an interface.
+func (v *updateCredentialResponse) GetUpdateCredential() updateCredentialUpdateCredentialUpdateCredentialResult {
+	return v.UpdateCredential
+}
+
+// updateCredentialUpdateCredentialUpdateCredentialResult includes the requested fields of the GraphQL type UpdateCredentialResult.
+// The GraphQL type's documentation follows.
+//
+// The result of the :update_credential mutation
+type updateCredentialUpdateCredentialUpdateCredentialResult struct {
+	// The successful result of the mutation
+	Result updateCredentialUpdateCredentialUpdateCredentialResultResultCredential `json:"result"`
+	// Any errors generated, if the mutation failed
+	Errors []updateCredentialUpdateCredentialUpdateCredentialResultErrorsMutationError `json:"errors"`
+}
+
+// GetResult returns updateCredentialUpdateCredentialUpdateCredentialResult.Result, and is useful for accessing the field via an interface.
+func (v *updateCredentialUpdateCredentialUpdateCredentialResult) GetResult() updateCredentialUpdateCredentialUpdateCredentialResultResultCredential {
+	return v.Result
+}
+
+// GetErrors returns updateCredentialUpdateCredentialUpdateCredentialResult.Errors, and is useful for accessing the field via an interface.
+func (v *updateCredentialUpdateCredentialUpdateCredentialResult) GetErrors() []updateCredentialUpdateCredentialUpdateCredentialResultErrorsMutationError {
+	return v.Errors
+}
+
+// updateCredentialUpdateCredentialUpdateCredentialResultErrorsMutationError includes the requested fields of the GraphQL type MutationError.
+// The GraphQL type's documentation follows.
+//
+// An error generated by a failed mutation
+type updateCredentialUpdateCredentialUpdateCredentialResultErrorsMutationError struct {
+	// An error code for the given error
+	Code string `json:"code"`
+	// The human readable error message
+	Message string `json:"message"`
+}
+
+// GetCode returns updateCredentialUpdateCredentialUpdateCredentialResultErrorsMutationError.Code, and is useful for accessing the field via an interface.
+func (v *updateCredentialUpdateCredentialUpdateCredentialResultErrorsMutationError) GetCode() string {
+	return v.Code
+}
+
+// GetMessage returns updateCredentialUpdateCredentialUpdateCredentialResultErrorsMutationError.Message, and is useful for accessing the field via an interface.
+func (v *updateCredentialUpdateCredentialUpdateCredentialResultErrorsMutationError) GetMessage() string {
+	return v.Message
+}
+
+// updateCredentialUpdateCredentialUpdateCredentialResultResultCredential includes the requested fields of the GraphQL type Credential.
+type updateCredentialUpdateCredentialUpdateCredentialResultResultCredential struct {
+	Id string `json:"id"`
+}
+
+// GetId returns updateCredentialUpdateCredentialUpdateCredentialResultResultCredential.Id, and is useful for accessing the field via an interface.
+func (v *updateCredentialUpdateCredentialUpdateCredentialResultResultCredential) GetId() string {
+	return v.Id
+}
 
 // updateDatabaseResponse is returned by updateDatabase on success.
 type updateDatabaseResponse struct {
@@ -350,6 +661,47 @@ type updateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase struct {
 // GetId returns updateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase.Id, and is useful for accessing the field via an interface.
 func (v *updateDatabaseUpdateDatabaseUpdateDatabaseResultResultDatabase) GetId() string { return v.Id }
 
+// The query or mutation executed by createCredential.
+const createCredential_Operation = `
+mutation createCredential ($input: CreateCredentialInput!) {
+	createCredential(input: $input) {
+		result {
+			id
+		}
+		errors {
+			code
+			message
+		}
+	}
+}
+`
+
+func createCredential(
+	ctx context.Context,
+	client graphql.Client,
+	input CreateCredentialInput,
+) (*createCredentialResponse, error) {
+	req := &graphql.Request{
+		OpName: "createCredential",
+		Query:  createCredential_Operation,
+		Variables: &__createCredentialInput{
+			Input: input,
+		},
+	}
+	var err error
+
+	var data createCredentialResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
 // The query or mutation executed by createDatabase.
 const createDatabase_Operation = `
 mutation createDatabase ($input: CreateDatabaseInput!) {
@@ -380,6 +732,47 @@ func createDatabase(
 	var err error
 
 	var data createDatabaseResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by deleteCredential.
+const deleteCredential_Operation = `
+mutation deleteCredential ($id: ID!) {
+	deleteCredential(id: $id) {
+		result {
+			id
+		}
+		errors {
+			code
+			message
+		}
+	}
+}
+`
+
+func deleteCredential(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*deleteCredentialResponse, error) {
+	req := &graphql.Request{
+		OpName: "deleteCredential",
+		Query:  deleteCredential_Operation,
+		Variables: &__deleteCredentialInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data deleteCredentialResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
@@ -432,6 +825,47 @@ func deleteDatabase(
 	return &data, err
 }
 
+// The query or mutation executed by getCredential.
+const getCredential_Operation = `
+query getCredential ($id: ID!) {
+	credential(id: $id) {
+		id
+		description
+		username
+		reviewsRequired
+		database {
+			id
+		}
+	}
+}
+`
+
+func getCredential(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+) (*getCredentialResponse, error) {
+	req := &graphql.Request{
+		OpName: "getCredential",
+		Query:  getCredential_Operation,
+		Variables: &__getCredentialInput{
+			Id: id,
+		},
+	}
+	var err error
+
+	var data getCredentialResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
 // The query or mutation executed by getDatabase.
 const getDatabase_Operation = `
 query getDatabase ($id: ID!) {
@@ -462,6 +896,49 @@ func getDatabase(
 	var err error
 
 	var data getDatabaseResponse
+	resp := &graphql.Response{Data: &data}
+
+	err = client.MakeRequest(
+		ctx,
+		req,
+		resp,
+	)
+
+	return &data, err
+}
+
+// The query or mutation executed by updateCredential.
+const updateCredential_Operation = `
+mutation updateCredential ($id: ID!, $input: UpdateCredentialInput!) {
+	updateCredential(id: $id, input: $input) {
+		result {
+			id
+		}
+		errors {
+			code
+			message
+		}
+	}
+}
+`
+
+func updateCredential(
+	ctx context.Context,
+	client graphql.Client,
+	id string,
+	input UpdateCredentialInput,
+) (*updateCredentialResponse, error) {
+	req := &graphql.Request{
+		OpName: "updateCredential",
+		Query:  updateCredential_Operation,
+		Variables: &__updateCredentialInput{
+			Id:    id,
+			Input: input,
+		},
+	}
+	var err error
+
+	var data updateCredentialResponse
 	resp := &graphql.Response{Data: &data}
 
 	err = client.MakeRequest(
