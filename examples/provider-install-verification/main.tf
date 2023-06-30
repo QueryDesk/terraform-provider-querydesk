@@ -13,7 +13,14 @@ provider "querydesk" {
 
 resource "querydesk_database" "example" {
   name     = "terraform"
-  adapter  = "postgres"
+  adapter  = "POSTGRES"
   hostname = "localhost"
   database = "terraform"
+}
+
+resource "querydesk_database_user" "example" {
+  database_id      = querydesk_database.example.id
+  username         = "postgres"
+  password         = "postgres"
+  reviews_required = 0
 }
