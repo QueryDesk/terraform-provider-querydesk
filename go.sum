@@ -357,8 +357,8 @@ github.com/vektah/gqlparser v1.3.1 h1:8b0IcD3qZKWJQHSzynbDlrtP3IxVydZ2DZepCGofqf
 github.com/vektah/gqlparser v1.3.1/go.mod h1:bkVf0FX+Stjg/MHnm8mEyubuaArhNEqfQhF+OTiAL74=
 github.com/vektah/gqlparser/v2 v2.5.5 h1:zZj0N2PtRGLBo+zw/IHOcUfK+8po1k5rb3O3Twe7tLM=
 github.com/vektah/gqlparser/v2 v2.5.5/go.mod h1:z8xXUff237NntSuH8mLFijZ+1tjV1swDbpDqjJmk6ME=
-github.com/vektra/mockery/v2 v2.30.16 h1:XbUaK84eY7Hl/y6JeT7hVaA59Jgo4owlNWWgfL/gCQU=
-github.com/vektra/mockery/v2 v2.30.16/go.mod h1:9lREs4VEeQiUS3rizYQx1saxHu2JiIhThP0q9+fDegM=
+github.com/vektra/mockery/v2 v2.31.4 h1:7Q7nxblgyxQJPhtMSdwfZZ9ZD03xl/ynWM5rzJvsC2c=
+github.com/vektra/mockery/v2 v2.31.4/go.mod h1:9lREs4VEeQiUS3rizYQx1saxHu2JiIhThP0q9+fDegM=
 github.com/vmihailenco/msgpack v3.3.3+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
 github.com/vmihailenco/msgpack v4.0.4+incompatible h1:dSLoQfGFAo3F6OoNhwUmLwVgaUXK79GlxNBwueZn0xI=
 github.com/vmihailenco/msgpack v4.0.4+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=

@@ -10,7 +10,7 @@ require (
 	github.com/hashicorp/terraform-plugin-testing v1.3.0
 	github.com/stretchr/testify v1.8.4
 	github.com/suessflorian/gqlfetch v0.6.0
-	github.com/vektra/mockery/v2 v2.30.16
+	github.com/vektra/mockery/v2 v2.31.4
 )
 
 require (
